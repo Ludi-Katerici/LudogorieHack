@@ -5,8 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using EducateMe.Data.Common.Models;
+using EducateMe.Data.Configurations;
 using EducateMe.Data.Models;
-
+using EducateMe.Data.Models.Common;
+using EducateMe.Data.Models.Common.RelationshipModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,28 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     }
 
     public DbSet<Setting> Settings { get; set; }
+
+    public DbSet<EventCategory> EventCategories { get; set; }
+
+    public DbSet<EventInterest> EventInterests { get; set; }
+
+    public DbSet<EventStudent> EventStudents { get; set; }
+
+    public DbSet<StudentCategory> StudentCategories { get; set; }
+
+    public DbSet<StudentInterest> StudentInterests { get; set; }
+
+    public DbSet<Category> Categories { get; set; }
+
+    public DbSet<City> Cities { get; set; }
+
+    public DbSet<Interest> Interests { get; set; }
+
+    public DbSet<Event> Events { get; set; }
+
+    public DbSet<Organization> Organizations { get; set; }
+
+    public DbSet<Student> Students { get; set; }
 
     public override int SaveChanges() => this.SaveChanges(true);
 
@@ -72,6 +96,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         {
             foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
         }
+
+        builder.ConfigureRelations();
     }
 
     private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)
