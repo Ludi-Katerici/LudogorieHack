@@ -53,9 +53,9 @@ public static class ModelBuilderExtensions
                 const string shouldHaveOrganizationId =
                     $"{nameof(ApplicationUser.OrganizationId)} IS NOT NULL AND {nameof(ApplicationUser.StudentId)} IS NULL";
 
-                entity.HasCheckConstraint(
+                /*entity.HasCheckConstraint(
                     "chk_shouldHaveStudentOrOrganization",
-                    $"({shouldHaveStudentId}) OR ({shouldHaveOrganizationId})");
+                    $"({shouldHaveStudentId}) OR ({shouldHaveOrganizationId})");*/
             });
 
         builder.Entity<Student>(

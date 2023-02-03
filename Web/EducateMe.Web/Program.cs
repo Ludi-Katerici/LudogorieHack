@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 using EducateMe.Data;
 using EducateMe.Data.Common;
@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity;
 
 namespace EducateMe.Web;
 
