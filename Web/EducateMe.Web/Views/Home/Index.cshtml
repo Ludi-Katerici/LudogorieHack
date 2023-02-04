@@ -1,7 +1,25 @@
-﻿@using EducateMe.Common
-@using Microsoft.CodeAnalysis.Scripting
-@{
-    this.ViewData["Title"] = "Home Page";
-}
+﻿<section class="100vh">
+    <div class="row col-lg-12 align-content-center justify-content-center d-flex">
+        @for (var i = 0; i < 60; i++)
+        {
+            <div class="card mb-3 mx-3 col-lg-6" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img height="100%" width="100%" src="https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg" class="rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text">
+                                <small class="text-muted">Last updated 3 mins ago</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 
-<div>Home</div>
+
+    </div>
+</section>
