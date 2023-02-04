@@ -16,7 +16,7 @@
                                  style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"/>
                         </div>
                         <div class="col-xl-6">
-                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl">
+                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" enctype="multipart/form-data">
                                 <div class="card-body p-md-5 text-black">
                                     <h3 class="mb-5 text-uppercase">Потребителска регистрация</h3>
 
@@ -126,6 +126,20 @@
                                         <select asp-for="Input.CategoriesIds" asp-items="this.Model.Input.Categories" multiple>
                                         </select>
                                         <span asp-validation-for="Input.InterestsIds"></span>
+                                    </div>
+
+                                    <div class="row p-3">
+                                        <div class="col-md-3 ps-5">
+
+                                            <label asp-for="Input.Image" class="mb-0 fw-bold">Качи снимка</label>
+
+                                        </div>
+                                        <div class="col-md-9 pe-5">
+
+                                            <input asp-for="Input.Image" class="form-control form-control-lg"/>
+                                            <div class="small text-muted mt-2">Качи единична снимка</div>
+                                            <span asp-validation-for="Input.Image" class="text-danger"></span>
+                                        </div>
                                     </div>
 
 

@@ -12,7 +12,9 @@ using EducateMe.Common;
 using EducateMe.Data.Models;
 using EducateMe.Data.Models.Common.RelationshipModels;
 using EducateMe.Services.Data.Interfaces;
+using EducateMe.Web.AzureServices;
 using EducateMe.Web.Infrastructure.ValidationAttributes;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +35,7 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
         private readonly ICategoriesService categoriesService;
         private readonly IStudentsService studentsService;
         private readonly IUsersService usersService;
+        private readonly IAzureStorage azureStorage;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -43,7 +46,8 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             IInterestsService interestsService,
             ICategoriesService categoriesService,
             IStudentsService studentsService,
-            IUsersService usersService)
+            IUsersService usersService,
+            IAzureStorage azureStorage)
         {
             this.userManager = userManager;
             this.userStore = userStore;
@@ -55,6 +59,7 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             this.categoriesService = categoriesService;
             this.studentsService = studentsService;
             this.usersService = usersService;
+            this.azureStorage = azureStorage;
         }
 
         [BindProperty]
@@ -134,6 +139,10 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             [Display(Name = "Категории")]
             [EnsureOneElement(ErrorMessage = "Не сте избрали категория")]
             public List<int> CategoriesIds { get; set; } = new();
+
+            [Required(ErrorMessage = "Не сте качили снимка")]
+            [Display(Name = "Снимка")]
+            public IFormFile Image { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -166,8 +175,17 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
                         School = this.Input.School,
                         Status = this.Input.Status,
                         CityId = this.Input.CityId,
-                        ImageUrl = "a",
                     };
+
+                    var imageResult = await this.azureStorage.UploadAsync(this.Input.Image);
+                    if (!imageResult.Error)
+                    {
+                        student.ImageUrl = imageResult.Blob.Uri;
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Error");
+                    }
 
                     var addedStudent = await this.studentsService.CreateStudent(student, this.Input.InterestsIds, this.Input.CategoriesIds);
 
