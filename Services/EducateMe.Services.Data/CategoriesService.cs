@@ -41,6 +41,7 @@ public class CategoriesService : ICategoriesService
                 Name = x.Name,
                 StudentsCount = x.Students.Count,
                 EventsCount = x.Events.Count,
+                Id = x.Id,
             }).ToListAsync();
     }
 
@@ -58,5 +59,14 @@ public class CategoriesService : ICategoriesService
     public async Task<bool> ExistsWithName(string name)
     {
         return await this.categoriesRepository.AllAsNoTracking().AnyAsync(x => x.Name == name);
+    }
+
+    public async Task<int> DeleteCategory(int id)
+    {
+        var category = await this.categoriesRepository.All().Where(x => x.Id == id).FirstOrDefaultAsync();
+
+        this.categoriesRepository.Delete(category);
+
+        return await this.categoriesRepository.SaveChangesAsync();
     }
 }

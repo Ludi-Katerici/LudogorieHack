@@ -2,11 +2,13 @@
 // Copyright (c) AspNetCoreTemplate. All Rights Reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using EducateMe.Common;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Web.Controllers;
+using EducateMe.Web.ViewModels.Administration.Categories;
 using EducateMe.Web.ViewModels.Administration.Interests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,12 +41,7 @@ public class InterestsController : BaseController
     {
         if (!this.ModelState.IsValid)
         {
-            var interests = await this.interestsService.GetInterestsTableData();
-            return this.View(
-                new InputInterestViewModel()
-                {
-                    Interests = interests,
-                });
+            return this.RedirectToAction("Index");
         }
 
         if (await this.interestsService.ExistsWithName(inputInterestViewModel.Name))
@@ -58,6 +55,34 @@ public class InterestsController : BaseController
 
         var interestsTableData = await this.interestsService.GetInterestsTableData();
         return this.View(
+            new InputInterestViewModel()
+            {
+                Interests = interestsTableData,
+            });
+    }
+
+    [Route("[controller]/{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var entitiesWritten = await this.interestsService.DeleteInterest(id);
+        List<InterestTableViewModel> interestsTableData;
+
+        if (entitiesWritten == 0)
+        {
+            this.ModelState.AddModelError("Id", "Неуспешна операция, опитайте пак по-късно");
+
+            interestsTableData = await this.interestsService.GetInterestsTableData();
+            return this.View(
+                "Index",
+                new InputInterestViewModel()
+                {
+                    Interests = interestsTableData,
+                });
+        }
+
+        interestsTableData = await this.interestsService.GetInterestsTableData();
+        return this.View(
+            "Index",
             new InputInterestViewModel()
             {
                 Interests = interestsTableData,

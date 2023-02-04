@@ -2,6 +2,7 @@
 // Copyright (c) AspNetCoreTemplate. All Rights Reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EducateMe.Common;
 using EducateMe.Data.Models.Common;
@@ -40,12 +41,7 @@ public class CategoriesController : BaseController
     {
         if (!this.ModelState.IsValid)
         {
-            var categories = await this.categoriesService.GetCategoriesTableData();
-            return this.View(
-                new InputCategoryViewModel()
-            {
-                Categories = categories,
-            });
+            return this.RedirectToAction("Index");
         }
 
         if (await this.categoriesService.ExistsWithName(inputCategoryViewModel.Name))
@@ -59,6 +55,34 @@ public class CategoriesController : BaseController
 
         var categoriesTableData = await this.categoriesService.GetCategoriesTableData();
         return this.View(
+            new InputCategoryViewModel()
+            {
+                Categories = categoriesTableData,
+            });
+    }
+
+    [Route("[controller]/{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var entitiesWritten = await this.categoriesService.DeleteCategory(id);
+        List<CategoryTableViewModel> categoriesTableData;
+
+        if (entitiesWritten == 0)
+        {
+            this.ModelState.AddModelError("Id", "Неуспешна операция, опитайте пак по-късно");
+
+            categoriesTableData = await this.categoriesService.GetCategoriesTableData();
+            return this.View(
+                "Index",
+                new InputCategoryViewModel()
+                {
+                    Categories = categoriesTableData,
+                });
+        }
+
+        categoriesTableData = await this.categoriesService.GetCategoriesTableData();
+        return this.View(
+            "Index",
             new InputCategoryViewModel()
             {
                 Categories = categoriesTableData,

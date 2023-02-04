@@ -27,6 +27,12 @@
                     {
                         <partial name="_AdminActionsPartial"/>
                     }
+                    else if (this.User.IsInRole(GlobalConstants.OrganizationRoleName))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark btn btn-primary text-white" asp-area="" asp-controller="Organizations" asp-action="Index">Create Event</a>
+                        </li>
+                    }
                     else
                     {
                         <li class="nav-item">

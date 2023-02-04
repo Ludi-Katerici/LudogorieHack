@@ -19,4 +19,6 @@ public interface IInterestsService
     Task<Interest> CreateInterest(string name);
 
     Task<bool> ExistsWithName(string name);
+
+    Task<int> DeleteInterest(int id);
 }

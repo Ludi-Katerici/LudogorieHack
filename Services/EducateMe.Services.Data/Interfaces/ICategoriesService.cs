@@ -19,4 +19,6 @@ public interface ICategoriesService
     Task<Category> CreateCategory(string name);
 
     Task<bool> ExistsWithName(string name);
+
+    Task<int> DeleteCategory(int id);
 }
