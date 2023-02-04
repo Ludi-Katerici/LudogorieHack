@@ -12,11 +12,15 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using EducateMe.Data.Models;
+using EducateMe.Data.Models.Common;
+using EducateMe.Services.Data.Interfaces;
+using EducateMe.Web.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace EducateMe.Web.Areas.Identity.Pages.Account
@@ -28,18 +32,21 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
         private readonly IUserStore<ApplicationUser> userStore;
         private readonly IUserEmailStore<ApplicationUser> emailStore;
         private readonly IEmailSender emailSender;
+        private readonly ICitiesService citiesService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICitiesService citiesService)
         {
             this.userManager = userManager;
             this.userStore = userStore;
             this.emailStore = this.GetEmailStore();
             this.signInManager = signInManager;
             this.emailSender = emailSender;
+            this.citiesService = citiesService;
         }
 
         [BindProperty]
@@ -95,10 +102,24 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             [Display(Name = "Потвърдете паролата")]
             [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
             public string ConfirmPassword { get; set; }
+
+            public List<SelectListItem> Provinces { get; set; } = new();
+
+            public List<SelectListItem> Cities { get; set; } = new();
+
+            public int PostalCode { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            var provinces = await this.citiesService.GetProvinces();
+
+            this.Input = new InputModel();
+
+            this.Input.Provinces = provinces.Select(x => new SelectListItem(x, x)).ToList();
+
+            var cities = (await this.citiesService.GetCities(this.Input.Provinces[0].Value)).OrderBy(x => x.PostalCode);
+            this.Input.Cities = cities.Select(x => new SelectListItem($"{x.Name}, {x.PostalCode}", x.PostalCode.ToString())).ToList();
             this.ReturnUrl = returnUrl;
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }

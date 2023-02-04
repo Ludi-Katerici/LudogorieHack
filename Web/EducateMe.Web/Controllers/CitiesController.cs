@@ -2,15 +2,16 @@
 // Copyright (c) AspNetCoreTemplate. All Rights Reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using EducateMe.Services.Data.Interfaces;
-using EducateMe.Web.Controllers;
+using EducateMe.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducateMe.Web.Areas.Administration.Controllers;
+namespace EducateMe.Web.Controllers;
 
 [AllowAnonymous]
 public class CitiesController : BaseController
@@ -23,19 +24,23 @@ public class CitiesController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProvinces()
+    [Route("[controller]/GetProvinces")]
+    public async Task<List<ProvinceViewModel>> GetProvinces()
     {
-        var provinces = await this.citiesService.GetProvinces();
+        var result = await this.citiesService.GetProvinces();
 
-        return this.Ok(new { provinces });
+        var provinces = result.Select(x => new ProvinceViewModel { Name = x }).ToList();
+
+        return provinces;
     }
 
-    [HttpPost("[controller]/{province}")]
+    [HttpGet]
+    [Route("[controller]/{province}")]
     public async Task<IActionResult> GetCities(string province)
     {
         var provinces = await this.citiesService.GetCities(province);
 
-        var result = provinces.Select(x => new { x.Id, x.Name, x.Municipality, x.PostalCode, }).ToList();
+        var result = provinces.Select(x => new CityViewModel { Id = x.Id, Name = x.Name, Municipality = x.Municipality, PostalCode = x.PostalCode, }).ToList();
 
         return this.Ok(result);
     }

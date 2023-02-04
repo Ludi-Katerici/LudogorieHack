@@ -60,5 +60,15 @@
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Logout.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Register.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.dark.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.dark.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.dark.rtl.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.dark.rtl.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.rtl.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.rtl.min.css.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\js\mdb.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\js\mdb.min.js.map" />
   </ItemGroup>
 </Project>
