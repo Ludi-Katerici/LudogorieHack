@@ -6,10 +6,12 @@ using EducateMe.Data.Common.Repositories;
 using EducateMe.Data.Models;
 using EducateMe.Data.Repositories;
 using EducateMe.Data.Seeding;
+using EducateMe.Services;
 using EducateMe.Services.Data;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Services.Mapping;
 using EducateMe.Services.Messaging;
+using EducateMe.Web.AzureServices;
 using EducateMe.Web.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -70,6 +72,8 @@ public class Program
         services.AddTransient<IInterestsService, InterestsService>();
         services.AddTransient<IStudentsService, StudentsService>();
         services.AddTransient<IUsersService, UsersService>();
+        services.AddScoped<IAzureStorage, AzureStorage>();
+        services.AddTransient<IOrganizationsService, OrganizationService>();
     }
 
     private static void Configure(WebApplication app)

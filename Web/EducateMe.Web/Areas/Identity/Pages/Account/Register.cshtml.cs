@@ -217,10 +217,11 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
 
         private async Task PopulateInputModel(InputModel inputModel)
         {
+            inputModel.Categories = (await this.categoriesService.GetCategories()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+            inputModel.Interests = (await this.interestsService.GetInterests()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+
             var provinces = await this.citiesService.GetProvinces();
             inputModel.Provinces = provinces.Select(x => new SelectListItem(x, x)).ToList();
-            inputModel.Interests = (await this.interestsService.GetInterests()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
-            inputModel.Categories = (await this.categoriesService.GetCategories()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
 
             var cities = (await this.citiesService.GetCities(this.Input.Provinces[0].Value)).OrderBy(x => x.PostalCode);
             inputModel.Cities = cities.Select(x => new SelectListItem($"{x.Name}, {x.PostalCode}", x.Id.ToString())).ToList();

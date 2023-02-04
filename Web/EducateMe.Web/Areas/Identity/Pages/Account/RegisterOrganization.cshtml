@@ -1,0 +1,162 @@
+﻿@page
+@model EducateMe.Web.Areas.Identity.Pages.Account.RegisterOrganization
+
+<section class="vh-100">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-xl-9">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="registerOrganizationForm" asp-route-returnUrl="@Model.ReturnUrl" enctype="multipart/form-data">
+                            <div class="row align-items-center pt-4 pb-3">
+                                <div class="col-md-3 ps-5">
+
+                                    <label asp-for="Input.Email" class="mb-0 fw-bold"></label>
+
+                                </div>
+                                <div class="col-md-9 pe-5">
+
+                                    <input asp-for="Input.Email" class="form-control form-control-lg" autocomplete="username" aria-required="true"/>
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+                            <hr class="mx-n3">
+
+                            <div class="row align-items-center pt-4 pb-3">
+                                <div class="col-md-3 ps-5">
+
+                                    <label asp-for="Input.Password" class="mb-0 fw-bold"></label>
+
+                                </div>
+                                <div class="col-md-9 pe-5">
+
+                                    <input asp-for="Input.Password" autocomplete="new-password" aria-required="true" class="form-control form-control-lg"/>
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+                            <hr class="mx-n3">
+
+                            <div class="row align-items-center pt-4 pb-3">
+                                <div class="col-md-3 ps-5">
+
+                                    <label asp-for="Input.ConfirmPassword" class="mb-0 fw-bold"></label>
+
+                                </div>
+                                <div class="col-md-9 pe-5">
+
+                                    <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg"/>
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+                            <hr class="mx-n3">
+
+                            <div class="row align-items-center pt-4 pb-3">
+                                <div class="col-md-3 ps-5">
+
+                                    <label asp-for="Input.Name" class="mb-0 fw-bold"></label>
+
+                                </div>
+                                <div class="col-md-9 pe-5">
+
+                                    <input asp-for="Input.Name" placeholder="Име на организацията..." class="form-control form-control-lg"/>
+                                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+                            <hr class="mx-n3">
+
+                            <div class="row align-items-center py-3">
+                                <div class="col-md-3 ps-5">
+
+                                    <label asp-for="Input.Description" class="mb-0 fw-bold"></label>
+
+                                </div>
+                                <div class="col-md-9 pe-5">
+
+                                    <textarea asp-for="Input.Description" class="form-control" rows="3" placeholder="Описание на организацията..."></textarea>
+                                    <span asp-validation-for="Input.Description" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+                            <hr class="mx-n3">
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+
+                                    <select id="provinces" class="form-control" asp-items="this.Model.Input.Provinces">
+                                        <option value="" disabled selected>Избери област</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+
+                                    <select id="postalCode" asp-for="Input.CityId" class="form-control" asp-items="this.Model.Input.Cities">
+                                        <option value="" disabled selected>Избери град</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <hr class="mx-n3">
+
+                            <div class="row align-items-center py-3">
+                                <div class="col-md-3 ps-5">
+
+                                    <label asp-for="Input.Image" class="mb-0 fw-bold">Качи снимка</label>
+
+                                </div>
+                                <div class="col-md-9 pe-5">
+
+                                    <input asp-for="Input.Image" class="form-control form-control-lg"/>
+                                    <div class="small text-muted mt-2">Качи единична снимка</div>
+                                    <span asp-validation-for="Input.Image" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <hr class="mx-n3">
+
+                            <div class="px-5 py-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Регистрирай организация</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+    <script>
+            const selectCities = document.querySelector("#postalCode");
+            const selectProvinces = document.querySelector("#provinces");
+        
+            function onClickHandler() {
+                const province = selectProvinces.value;
+                let cities;
+                fetch(`/Cities/${province}`)
+                    .then(x => x.json())
+                    .then(result => {
+                        let cities = result.sort((cityA, cityB) => cityA.postalCode - cityB.postalCode)
+                        selectCities.innerHTML = "";
+                        for (const city of cities) {
+                          selectCities.innerHTML += `<option value="${city.id}">${city.name + ", " + city.postalCode}</option>`;
+                        }
+                    })
+                    .catch(x => {selectCities.innerHTML = "";});
+            }
+            
+            selectProvinces.onchange = onClickHandler;
+        </script>
+}
