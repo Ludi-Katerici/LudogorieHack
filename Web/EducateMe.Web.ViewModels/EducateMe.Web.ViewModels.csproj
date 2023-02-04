@@ -21,6 +21,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\EducateMe.Data.Models\EducateMe.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\EducateMe.Services.Mapping\EducateMe.Services.Mapping.csproj" />
+    <ProjectReference Include="..\EducateMe.Web.Infrastructure\EducateMe.Web.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Http.Features">
+      <HintPath>..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.13\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
+      <HintPath>..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.13\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

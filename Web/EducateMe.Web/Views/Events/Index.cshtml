@@ -1,0 +1,125 @@
+﻿@model EducateMe.Web.ViewModels.Events.InputEventViewModel
+
+<section>
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col">
+                <div class="card card-registration my-4">
+                    <div class="row g-0">
+                        <div class="col-xl-12">
+                            <form id="registerEvent" enctype="multipart/form-data">
+                                <div class="card-body p-md-5 text-black">
+                                    <h3 class="mb-5 text-uppercase">Регистрация на събитие</h3>
+
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-outline">
+                                                <label asp-for="Name" class="form-label"></label>
+                                                <input asp-for="Name" class="form-control form-control-lg"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-outline">
+                                                <label asp-for="MinAge" class="form-label"></label>
+                                                <input asp-for="MinAge" class="form-control form-control-lg"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-outline">
+                                                <label asp-for="MaxAge" class="form-label"></label>
+                                                <input asp-for="MaxAge" class="form-control form-control-lg"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-outline col-md-6">
+                                            <label asp-for="Description" class="form-label"></label>
+                                            <textarea asp-for="Description" rows="2" class="form-control form-control-lg"></textarea>
+                                        </div>
+                                        <div class="form-outline col-md-6">
+                                            <label asp-for="Requirements" class="form-label"></label>
+                                            <textarea asp-for="Requirements" rows="2" class="form-control form-control-lg"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-outline col-md-4">
+                                            <label asp-for="ExpirationDate" class="form-label"></label>
+                                            <input asp-for="ExpirationDate" class="form-control form-control-lg"/>
+                                        </div>
+                                        <div class="form-outline col-md-4">
+                                            <label asp-for="StartDate" class="form-label"></label>
+                                            <input asp-for="StartDate" class="form-control form-control-lg"/>
+                                        </div>
+                                        <div class="form-outline col-md-4">
+                                            <label asp-for="EndDate" class="form-label"></label>
+                                            <input asp-for="EndDate" class="form-control form-control-lg"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-outline col-md-6">
+                                            <label asp-for="Image" class="form-label"></label>
+                                            <input asp-for="Image" class="form-control form-control-lg"/>
+                                        </div>
+                                        <div class="form-outline col-md-6">
+                                            <label asp-for="ApplicationUrl" class="form-label"></label>
+                                            <input asp-for="ApplicationUrl" class="form-control form-control-lg"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-6 mb-4">
+
+                                            <select id="provinces" class="form-control" asp-items="this.Model.Provinces">
+                                                <option value="" disabled selected>Избери област</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+
+                                            <select id="postalCode" asp-for="CityId" class="form-control" asp-items="this.Model.Cities">
+                                                <option value="" disabled selected>Избери град</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row p-3">
+                                        <label asp-for="InterestsIds"></label>
+                                        <select asp-for="InterestsIds" asp-items="this.Model.Interests" multiple>
+                                        </select>
+                                        <span asp-validation-for="InterestsIds"></span>
+                                    </div>
+
+                                    <div class="row p-3">
+                                        <label asp-for="CategoriesIds"></label>
+                                        <select asp-for="CategoriesIds" asp-items="this.Model.Categories" multiple>
+                                        </select>
+                                        <span asp-validation-for="CategoriesIds"></span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end pt-3">
+                                        <button id="registerEventSubmit" type="submit" class="btn btn-warning btn-lg ms-2">Регистрирай потребител</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        initializeCities();
+    </script>
+}

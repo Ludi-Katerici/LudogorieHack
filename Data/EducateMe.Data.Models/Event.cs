@@ -37,6 +37,8 @@ public class Event : BaseDeletableModel<int>
 
     public int OrganizationId { get; set; }
 
+    public string ImageUrl { get; set; }
+
     public Organization Organization { get; set; }
 
     public ICollection<EventCategory> Categories { get; set; } = new HashSet<EventCategory>();
