@@ -11,4 +11,8 @@ public interface IUsersService
     Task SetUsersOrganizationId(string userId, int organizationId);
 
     Task SetUsersStudentId(string userId, int studentId);
+
+    Task<int> GetUsersStudentId(string userId);
+
+    Task<int> GetUsersOrganizationId(string userId);
 }

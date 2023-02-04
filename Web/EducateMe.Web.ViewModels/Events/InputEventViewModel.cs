@@ -21,7 +21,7 @@ public class InputEventViewModel
 
     [Required(ErrorMessage = "Не сте въвели описание")]
     [StringLength(1000)]
-    [MinLength(100)]
+    [MinLength(100, ErrorMessage = "Трябва да има поне 100 въведени знака")]
     [Display(Name = "Описание")]
     public string Description { get; set; }
 
@@ -44,7 +44,9 @@ public class InputEventViewModel
     [Required(ErrorMessage = "Не сте въвели крайна дата")]
     [Display(Name = "Крайна дата за кандидатстване")]
     [FutureDate(ErrorMessage = "Датата трябва бъде в бъдещето")]
-    public DateTime ExpirationDate { get; set; }
+    [DataType(DataType.Date)]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+    public DateTime ExpirationDate { get; set; } = DateTime.Today;
 
     [Required(ErrorMessage = "Не сте въвели линк за форма за кандидатстване")]
     [Display(Name = "Форма за кандидатстване (LINK)")]
@@ -61,12 +63,16 @@ public class InputEventViewModel
     [Required(ErrorMessage = "Не сте въвели начална дата")]
     [Display(Name = "Начална дата")]
     [FutureDate(ErrorMessage = "Датата трябва бъде в бъдещето")]
-    public DateTime StartDate { get; set; }
+    [DataType(DataType.Date)]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+    public DateTime StartDate { get; set; } = DateTime.Today;
 
     [Required(ErrorMessage = "Не сте въвели крайна дата")]
     [Display(Name = "Крайна дата")]
     [FutureDate(ErrorMessage = "Датата трябва бъде в бъдещето")]
-    public DateTime EndDate { get; set; }
+    [DataType(DataType.Date)]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+    public DateTime EndDate { get; set; } = DateTime.Today;
 
 
     public int OrganizationId { get; set; }

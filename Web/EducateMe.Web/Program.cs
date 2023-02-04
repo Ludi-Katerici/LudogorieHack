@@ -72,6 +72,7 @@ public class Program
         services.AddScoped<IAzureStorage, AzureStorage>();
         services.AddTransient<IOrganizationsService, OrganizationService>();
         services.AddTransient<IDropdownListService, DropdownListService>();
+        services.AddTransient<IEventsService, EventService>();
     }
 
     private static void Configure(WebApplication app)

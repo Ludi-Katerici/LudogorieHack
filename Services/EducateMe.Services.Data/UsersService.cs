@@ -33,4 +33,18 @@ public class UsersService : IUsersService
         user.StudentId = studentId;
         await this.applicationDbContext.SaveChangesAsync();
     }
+
+    public async Task<int> GetUsersStudentId(string userId)
+    {
+        var studentId = await this.applicationDbContext.Users.Where(x => x.Id == userId).Select(x => x.StudentId).FirstAsync();
+
+        return (int)studentId;
+    }
+
+    public async Task<int> GetUsersOrganizationId(string userId)
+    {
+        var organizationId = await this.applicationDbContext.Users.Where(x => x.Id == userId).Select(x => x.OrganizationId).FirstAsync();
+
+        return (int)organizationId;
+    }
 }

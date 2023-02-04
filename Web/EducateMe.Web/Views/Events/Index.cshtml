@@ -7,7 +7,7 @@
                 <div class="card card-registration my-4">
                     <div class="row g-0">
                         <div class="col-xl-12">
-                            <form id="registerEvent" enctype="multipart/form-data">
+                            <form id="registerEvent" method="post" enctype="multipart/form-data">
                                 <div class="card-body p-md-5 text-black">
                                     <h3 class="mb-5 text-uppercase">Регистрация на събитие</h3>
 
@@ -50,7 +50,7 @@
                                     <div class="row">
                                         <div class="form-outline col-md-4">
                                             <label asp-for="ExpirationDate" class="form-label"></label>
-                                            <input asp-for="ExpirationDate" class="form-control form-control-lg"/>
+                                            <input asp-for="ExpirationDate" class="form-control form-control-lg" asp-format=""/>
                                         </div>
                                         <div class="form-outline col-md-4">
                                             <label asp-for="StartDate" class="form-label"></label>
