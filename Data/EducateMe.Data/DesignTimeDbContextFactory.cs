@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -18,6 +19,8 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
         var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         builder.UseSqlServer(connectionString);
+
+        builder.LogTo(Console.WriteLine);
 
         return new ApplicationDbContext(builder.Options);
     }

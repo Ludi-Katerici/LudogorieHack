@@ -88,14 +88,28 @@
                                     </div>
 
                                     <div class="row">
+                                        <div class="col-md-12 mb-4">
+                                            <div class="form-outline">
+                                                <label asp-for="Input.Status" class="form-label"></label>
+                                                <input placeholder="Работник/ученик/други" asp-for="Input.Status" class="form-control form-control-lg"/>
+                                                <span asp-validation-for="Input.Status" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col-md-6 mb-4">
 
-                                            <select id="provinces" class="form-control" asp-items="this.Model.Input.Provinces"></select>
+                                            <select id="provinces" class="form-control" asp-items="this.Model.Input.Provinces">
+                                                <option value="" disabled selected>Select province</option>
+                                            </select>
 
                                         </div>
                                         <div class="col-md-6 mb-4">
 
-                                            <select id="postalCode" asp-for="Input.PostalCode" class="form-control" asp-items="this.Model.Input.Cities"></select>
+                                            <select id="postalCode" asp-for="Input.CityId" class="form-control" asp-items="this.Model.Input.Cities">
+                                                <option value="" disabled selected>Select city</option>
+                                            </select>
 
                                         </div>
                                     </div>
@@ -145,9 +159,10 @@
                     let cities = result.sort((cityA, cityB) => cityA.postalCode - cityB.postalCode)
                     selectCities.innerHTML = "";
                     for (const city of cities) {
-                      selectCities.innerHTML += `<option value="${city.postalCode}">${city.name + ", " + city.postalCode}</option>`;
+                      selectCities.innerHTML += `<option value="${city.id}">${city.name + ", " + city.postalCode}</option>`;
                     }
-                });
+                })
+                .catch(x => {selectCities.innerHTML = "";});
         }
         
         selectProvinces.onchange = onClickHandler;

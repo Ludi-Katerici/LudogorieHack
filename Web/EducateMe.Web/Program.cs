@@ -18,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Identity;
 
 namespace EducateMe.Web;
 
@@ -69,6 +68,8 @@ public class Program
         services.AddTransient<ICitiesService, CitiesService>();
         services.AddTransient<ICategoriesService, CategoriesService>();
         services.AddTransient<IInterestsService, InterestsService>();
+        services.AddTransient<IStudentsService, StudentsService>();
+        services.AddTransient<IUsersService, UsersService>();
     }
 
     private static void Configure(WebApplication app)

@@ -74,7 +74,7 @@ public static class ModelBuilderExtensions
                 student
                     .HasMany(x => x.Categories)
                     .WithOne(x => x.Student)
-                    .HasForeignKey(x => x.CategoryId);
+                    .HasForeignKey(x => x.StudentId);
 
                 student
                     .HasMany(x => x.Events)

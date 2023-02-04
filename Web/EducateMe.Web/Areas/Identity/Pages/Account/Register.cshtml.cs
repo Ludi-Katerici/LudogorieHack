@@ -6,23 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-
+using EducateMe.Common;
 using EducateMe.Data.Models;
-using EducateMe.Data.Models.Common;
+using EducateMe.Data.Models.Common.RelationshipModels;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Web.Infrastructure.ValidationAttributes;
-using EducateMe.Web.ViewModels;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace EducateMe.Web.Areas.Identity.Pages.Account
 {
@@ -36,6 +31,8 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
         private readonly ICitiesService citiesService;
         private readonly IInterestsService interestsService;
         private readonly ICategoriesService categoriesService;
+        private readonly IStudentsService studentsService;
+        private readonly IUsersService usersService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -44,7 +41,9 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             ICitiesService citiesService,
             IInterestsService interestsService,
-            ICategoriesService categoriesService)
+            ICategoriesService categoriesService,
+            IStudentsService studentsService,
+            IUsersService usersService)
         {
             this.userManager = userManager;
             this.userStore = userStore;
@@ -54,14 +53,14 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             this.citiesService = citiesService;
             this.interestsService = interestsService;
             this.categoriesService = categoriesService;
+            this.studentsService = studentsService;
+            this.usersService = usersService;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
-
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
         {
@@ -88,6 +87,12 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             [MinLength(2)]
             [Display(Name = "Учебна институция")]
             public string School { get; set; }
+
+            [Required(ErrorMessage = "Не сте въвели статус")]
+            [StringLength(25)]
+            [MinLength(2)]
+            [Display(Name = "Статус")]
+            public string Status { get; set; }
 
             [Required(ErrorMessage = "Не сте въвели години")]
             [Range(7, 100, ErrorMessage = "Допустимите стойности са между 7 и 100")]
@@ -116,41 +121,32 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
 
             [Required(ErrorMessage = "Не сте избрали град")]
             [Display(Name = "Град")]
-            public int PostalCode { get; set; }
+            public int CityId { get; set; }
 
             public List<SelectListItem> Interests { get; set; }
 
             [Display(Name = "Интереси")]
-            [MinLength(1, ErrorMessage = "Не сте избрали категория")]
-            public int[] InterestsIds { get; set; }
+            [EnsureOneElement(ErrorMessage = "Не сте избрали интерес")]
+            public List<int> InterestsIds { get; set; } = new();
 
             public List<SelectListItem> Categories { get; set; }
 
             [Display(Name = "Категории")]
-            [MinLength(1, ErrorMessage = "Не сте избрали категория")]
-            public int[] CategoriesIds { get; set; }
+            [EnsureOneElement(ErrorMessage = "Не сте избрали категория")]
+            public List<int> CategoriesIds { get; set; } = new();
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            var provinces = await this.citiesService.GetProvinces();
-
             this.Input = new InputModel();
 
-            this.Input.Provinces = provinces.Select(x => new SelectListItem(x, x)).ToList();
-            this.Input.Interests = (await this.interestsService.GetInterests()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
-            this.Input.Categories = (await this.categoriesService.GetCategories()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
-
-            var cities = (await this.citiesService.GetCities(this.Input.Provinces[0].Value)).OrderBy(x => x.PostalCode);
-            this.Input.Cities = cities.Select(x => new SelectListItem($"{x.Name}, {x.PostalCode}", x.PostalCode.ToString())).ToList();
+            await this.PopulateInputModel(this.Input);
             this.ReturnUrl = returnUrl;
-            this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= this.Url.Content("~/");
-            this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (this.ModelState.IsValid)
             {
                 var user = this.CreateUser();
@@ -161,31 +157,25 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    Console.WriteLine("User created a new account with password.");
-
-                    var userId = await this.userManager.GetUserIdAsync(user);
-                    var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = this.Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId, code, returnUrl },
-                        protocol: this.Request.Scheme);
-
-                    await this.emailSender.SendEmailAsync(
-                        this.Input.Email,
-                        "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (this.userManager.Options.SignIn.RequireConfirmedAccount)
+                    var student = new Student()
                     {
-                        return this.RedirectToPage("RegisterConfirmation", new { email = this.Input.Email, returnUrl });
-                    }
-                    else
-                    {
-                        await this.signInManager.SignInAsync(user, isPersistent: false);
-                        return this.LocalRedirect(returnUrl);
-                    }
+                        FirstName = this.Input.FirstName,
+                        MiddleName = this.Input.MiddleName,
+                        LastName = this.Input.LastName,
+                        Age = this.Input.Age,
+                        School = this.Input.School,
+                        Status = this.Input.Status,
+                        CityId = this.Input.CityId,
+                        ImageUrl = "a",
+                    };
+
+                    var addedStudent = await this.studentsService.CreateStudent(student, this.Input.InterestsIds, this.Input.CategoriesIds);
+
+                    await this.usersService.SetUsersStudentId(user.Id, addedStudent.Id);
+                    await this.userManager.AddToRoleAsync(user, GlobalConstants.StudentRoleName);
+
+                    await this.signInManager.SignInAsync(user, isPersistent: false);
+                    return this.LocalRedirect(returnUrl);
                 }
 
                 foreach (var error in result.Errors)
@@ -193,6 +183,8 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
                     this.ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+            await this.PopulateInputModel(this.Input);
 
             // If we got this far, something failed, redisplay form
             return this.Page();
@@ -221,6 +213,17 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             }
 
             return (IUserEmailStore<ApplicationUser>)this.userStore;
+        }
+
+        private async Task PopulateInputModel(InputModel inputModel)
+        {
+            var provinces = await this.citiesService.GetProvinces();
+            inputModel.Provinces = provinces.Select(x => new SelectListItem(x, x)).ToList();
+            inputModel.Interests = (await this.interestsService.GetInterests()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+            inputModel.Categories = (await this.categoriesService.GetCategories()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+
+            var cities = (await this.citiesService.GetCities(this.Input.Provinces[0].Value)).OrderBy(x => x.PostalCode);
+            inputModel.Cities = cities.Select(x => new SelectListItem($"{x.Name}, {x.PostalCode}", x.Id.ToString())).ToList();
         }
     }
 }
