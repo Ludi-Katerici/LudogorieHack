@@ -28,6 +28,8 @@ public class ApplicationDbContextSeeder : ISeeder
             new RolesSeeder(),
             new SettingsSeeder(),
             new CitiesSeeder(),
+            new CategoriesSeeder(),
+            new InterestsSeeder(),
         };
 
         foreach (var seeder in seeders)

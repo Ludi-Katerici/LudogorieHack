@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using EducateMe.Data.Models;
 using EducateMe.Data.Models.Common;
 using EducateMe.Services.Data.Interfaces;
+using EducateMe.Web.Infrastructure.ValidationAttributes;
 using EducateMe.Web.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -33,13 +34,17 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> emailStore;
         private readonly IEmailSender emailSender;
         private readonly ICitiesService citiesService;
+        private readonly IInterestsService interestsService;
+        private readonly ICategoriesService categoriesService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ICitiesService citiesService)
+            ICitiesService citiesService,
+            IInterestsService interestsService,
+            ICategoriesService categoriesService)
         {
             this.userManager = userManager;
             this.userStore = userStore;
@@ -47,6 +52,8 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             this.signInManager = signInManager;
             this.emailSender = emailSender;
             this.citiesService = citiesService;
+            this.interestsService = interestsService;
+            this.categoriesService = categoriesService;
         }
 
         [BindProperty]
@@ -77,13 +84,13 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             [Required(ErrorMessage = "Не сте въвели учебна институция")]
-            [StringLength(25)]
+            [StringLength(75)]
             [MinLength(2)]
             [Display(Name = "Учебна институция")]
             public string School { get; set; }
 
             [Required(ErrorMessage = "Не сте въвели години")]
-            [Range(7, 100)]
+            [Range(7, 100, ErrorMessage = "Допустимите стойности са между 7 и 100")]
             [Display(Name = "Години")]
             public int Age { get; set; }
 
@@ -107,7 +114,21 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
 
             public List<SelectListItem> Cities { get; set; } = new();
 
+            [Required(ErrorMessage = "Не сте избрали град")]
+            [Display(Name = "Град")]
             public int PostalCode { get; set; }
+
+            public List<SelectListItem> Interests { get; set; }
+
+            [Display(Name = "Интереси")]
+            [MinLength(1, ErrorMessage = "Не сте избрали категория")]
+            public int[] InterestsIds { get; set; }
+
+            public List<SelectListItem> Categories { get; set; }
+
+            [Display(Name = "Категории")]
+            [MinLength(1, ErrorMessage = "Не сте избрали категория")]
+            public int[] CategoriesIds { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -117,6 +138,8 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             this.Input = new InputModel();
 
             this.Input.Provinces = provinces.Select(x => new SelectListItem(x, x)).ToList();
+            this.Input.Interests = (await this.interestsService.GetInterests()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+            this.Input.Categories = (await this.categoriesService.GetCategories()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
 
             var cities = (await this.citiesService.GetCities(this.Input.Provinces[0].Value)).OrderBy(x => x.PostalCode);
             this.Input.Cities = cities.Select(x => new SelectListItem($"{x.Name}, {x.PostalCode}", x.PostalCode.ToString())).ToList();
