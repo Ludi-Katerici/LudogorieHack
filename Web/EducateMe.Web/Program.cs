@@ -1,5 +1,4 @@
 using System.Reflection;
-
 using EducateMe.Data;
 using EducateMe.Data.Common;
 using EducateMe.Data.Common.Repositories;
@@ -50,10 +49,8 @@ public class Program
             });
 
         services.AddControllersWithViews(
-            options =>
-            {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).AddRazorRuntimeCompilation();
+                options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); })
+            .AddRazorRuntimeCompilation();
         services.AddRazorPages();
         services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -83,7 +80,8 @@ public class Program
         {
             var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             dbContext.Database.Migrate();
-            new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+            new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter()
+                .GetResult();
         }
 
         AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
@@ -108,7 +106,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+        app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
         app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
         app.MapRazorPages();
     }

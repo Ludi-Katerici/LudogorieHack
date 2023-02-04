@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.14.1" />
+    <PackageReference Include="bootstrap" Version="5.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
       <PrivateAssets>all</PrivateAssets>
@@ -70,5 +71,10 @@
     <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\css\mdb.rtl.min.css.map" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\js\mdb.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\mdbootstrap\dist\js\mdb.min.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <_ContentIncludedByDefault Remove="Areas\Administration\Views\Interests\Index.cshtml" />
   </ItemGroup>
 </Project>

@@ -26,8 +26,9 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="Administration" asp-controller="Categories" asp-action="Index">Privacy</a>
                     </li>
+                    <partial name="_AdminActionsPartial"/>
                 </ul>
                 <partial name="_LoginPartial"/>
             </div>
@@ -44,16 +45,17 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="Administration" asp-controller="Categories" asp-action="Index">Privacy</a>
     </div>
 </footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
 <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
 <script src="~/js/site.min.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
 <script src="~/js/multiselect-dropdown.js" asp-append-version="true"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
 @await this.RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
