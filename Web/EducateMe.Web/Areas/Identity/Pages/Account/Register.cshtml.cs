@@ -42,57 +42,58 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             this.emailSender = emailSender;
         }
 
-        /// <summary>
-        ///     Gets or sets this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     Gets or sets this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     Gets or sets this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     Gets or sets this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Не сте въвели име")]
+            [StringLength(25)]
+            [MinLength(2)]
+            [Display(Name = "Име")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "Не сте въвели презиме")]
+            [StringLength(25)]
+            [MinLength(2)]
+            [Display(Name = "Презиме")]
+            public string MiddleName { get; set; }
+
+            [Required(ErrorMessage = "Не сте въвели фамилия")]
+            [StringLength(25)]
+            [MinLength(2)]
+            [Display(Name = "Фамилия")]
+            public string LastName { get; set; }
+
+            [Required(ErrorMessage = "Не сте въвели учебна институция")]
+            [StringLength(25)]
+            [MinLength(2)]
+            [Display(Name = "Учебна институция")]
+            public string School { get; set; }
+
+            [Required(ErrorMessage = "Не сте въвели години")]
+            [Range(7, 100)]
+            [Display(Name = "Години")]
+            public int Age { get; set; }
+
+            [Required(ErrorMessage = "Не сте въвел email")]
+            [EmailAddress(ErrorMessage = "Не валиден email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     Gets or sets this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Не сте въвели парола")]
+            [StringLength(100, ErrorMessage = "{0} трябва да бъде поне {2} и най-много {1} знаци дълга.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     Gets or sets this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Потвърдете паролата")]
+            [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
             public string ConfirmPassword { get; set; }
         }
 

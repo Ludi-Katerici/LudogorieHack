@@ -7,6 +7,7 @@ using EducateMe.Data.Models;
 using EducateMe.Data.Repositories;
 using EducateMe.Data.Seeding;
 using EducateMe.Services.Data;
+using EducateMe.Services.Data.Interfaces;
 using EducateMe.Services.Mapping;
 using EducateMe.Services.Messaging;
 using EducateMe.Web.ViewModels;
@@ -65,6 +66,7 @@ public class Program
         // Application services
         services.AddTransient<IEmailSender, NullMessageSender>();
         services.AddTransient<ISettingsService, SettingsService>();
+        services.AddTransient<ICitiesService, CitiesService>();
     }
 
     private static void Configure(WebApplication app)

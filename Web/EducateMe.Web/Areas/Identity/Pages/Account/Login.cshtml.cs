@@ -66,8 +66,8 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             ///     this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Не сте въвел парола")]
+            [EmailAddress(ErrorMessage = "Не сте въвел валиден email")]
             public string Email { get; set; }
 
             /// <summary>
@@ -84,7 +84,7 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             ///     Gets or sets a value indicating whether this API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Запомни ме?")]
             public bool RememberMe { get; set; }
         }
 
