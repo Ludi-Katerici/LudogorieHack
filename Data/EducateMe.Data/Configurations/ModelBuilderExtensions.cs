@@ -132,6 +132,10 @@ public static class ModelBuilderExtensions
                     .HasMany(x => x.Events)
                     .WithOne(x => x.Interest)
                     .HasForeignKey(x => x.EventId);
+
+                interest
+                    .HasIndex(x => x.Name)
+                    .IsUnique();
             });
 
         builder.Entity<Category>(
@@ -146,6 +150,10 @@ public static class ModelBuilderExtensions
                     .HasMany(x => x.Events)
                     .WithOne(x => x.Category)
                     .HasForeignKey(x => x.EventId);
+
+                category
+                    .HasIndex(x => x.Name)
+                    .IsUnique();
             });
     }
 }

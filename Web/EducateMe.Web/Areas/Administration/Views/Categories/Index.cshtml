@@ -1,1 +1,40 @@
-﻿<div>Categories</div>
+﻿@model EducateMe.Web.ViewModels.Administration.Categories.InputCategoryViewModel
+
+@{
+    this.ViewData["Title"] = "Създай категория";
+}
+
+<form method="post" class="col-md-6 offset-md-3">
+    <h1>@this.ViewData["Title"]</h1>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Име</th>
+          <th scope="col">Брой ученици интересуващи се от тази категория</th>
+          <th scope="col">Брой събития с тази категория</th>
+        </tr>
+      </thead>
+      <tbody>
+      @for (var i = 0; i < this.Model.Categories.Count; i++)
+      {
+          var index = i + 1;
+          
+          <tr>
+              <th scope="row">@index</th>
+              <td>@this.Model.Categories[i].Name</td>
+              <td>@this.Model.Categories[i].StudentsCount</td>
+              <td>@this.Model.Categories[i].EventsCount</td>
+          </tr>
+      }
+      </tbody>
+    </table>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control"/>
+    </div>
+    <button  type="submit" class="btn btn-primary mt-3">Създай</button>
+</form>

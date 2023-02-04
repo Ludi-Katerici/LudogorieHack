@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 
+using EducateMe.Common;
 using EducateMe.Web.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,11 @@ public class HomeController : BaseController
 {
     public IActionResult Index()
     {
+        if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+        {
+            return this.RedirectToAction("Index", "Categories", new { area = "Administration" });
+        }
+
         return this.View();
     }
 

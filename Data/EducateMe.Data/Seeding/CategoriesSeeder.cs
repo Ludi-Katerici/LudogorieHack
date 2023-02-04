@@ -40,6 +40,12 @@ public class CategoriesSeeder : ISeeder
                     Name = "Рисуване",
                 });
 
+            await categoriesRepository.AddAsync(
+                new Category()
+                {
+                    Name = "Други",
+                });
+
             await categoriesRepository.SaveChangesAsync();
         }
     }

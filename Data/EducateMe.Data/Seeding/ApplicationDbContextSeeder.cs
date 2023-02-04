@@ -30,6 +30,7 @@ public class ApplicationDbContextSeeder : ISeeder
             new CitiesSeeder(),
             new CategoriesSeeder(),
             new InterestsSeeder(),
+            new AdminSeeder(),
         };
 
         foreach (var seeder in seeders)

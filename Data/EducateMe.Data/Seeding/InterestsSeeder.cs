@@ -39,6 +39,12 @@ public class InterestsSeeder : ISeeder
                     Name = "Благотворителност",
                 });
 
+            await interestsRepository.AddAsync(
+                new Interest()
+                {
+                    Name = "Други",
+                });
+
             await interestsRepository.SaveChangesAsync();
         }
     }
