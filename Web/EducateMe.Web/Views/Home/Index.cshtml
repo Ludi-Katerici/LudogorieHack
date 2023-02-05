@@ -1,25 +1,31 @@
-﻿<section class="100vh">
+﻿@model ICollection<EducateMe.Web.ViewModels.Home.EventCardViewModel>
+
+<h1 class="justify-content-center align-content-center d-flex">Test</h1>
+<section class="100vh justify-content-center align-content-center d-flex">
     <div class="row col-lg-12 align-content-center justify-content-center d-flex">
-        @for (var i = 0; i < 60; i++)
+        @foreach (var eventViewModel in this.Model)
         {
+            var description = eventViewModel.Description[..128] + "...";
             <div class="card mb-3 mx-3 col-lg-6" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img height="100%" width="100%" src="https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg" class="rounded-start" alt="...">
+                        <img height="100%" width="100%" src="@eventViewModel.ImageUrl" class="rounded-start" alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <h5 class="card-title">@eventViewModel.Name</h5>
+                            <p class="card-text">@description</p>
+                            <div class="col-md-12">
+                                <a class="btn btn-info col-md-3" asp-controller="Home" asp-action="Details" asp-route-id="@eventViewModel.Id">Details</a>
+
+                            </div>
                             <p class="card-text">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                <small class="text-muted">Created on: @eventViewModel.CreatedOn.Date.ToString("d")</small>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
         }
-
-
     </div>
 </section>
