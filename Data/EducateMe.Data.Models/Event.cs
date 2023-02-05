@@ -48,4 +48,6 @@ public class Event : BaseDeletableModel<int>
     public ICollection<EventInterest> Interests { get; set; } = new HashSet<EventInterest>();
 
     public ICollection<EventStudent> Students { get; set; } = new HashSet<EventStudent>();
+
+    public ICollection<Favourite> Favourites { get; set; } = new HashSet<Favourite>();
 }

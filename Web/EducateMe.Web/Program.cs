@@ -73,6 +73,7 @@ public class Program
         services.AddTransient<IOrganizationsService, OrganizationService>();
         services.AddTransient<IDropdownListService, DropdownListService>();
         services.AddTransient<IEventsService, EventService>();
+        services.AddTransient<IFavouritesService, FavouritesService>();
     }
 
     private static void Configure(WebApplication app)

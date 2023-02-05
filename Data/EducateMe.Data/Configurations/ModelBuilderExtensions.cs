@@ -67,6 +67,11 @@ public static class ModelBuilderExtensions
                     .HasForeignKey(x => x.CityId);
 
                 student
+                    .HasMany(x => x.Favourites)
+                    .WithOne(x => x.Student)
+                    .HasForeignKey(x => x.StudentId);
+
+                student
                     .HasMany(x => x.Interests)
                     .WithOne(x => x.Student)
                     .HasForeignKey(x => x.StudentId);
@@ -98,6 +103,11 @@ public static class ModelBuilderExtensions
                     .HasOne(x => x.City)
                     .WithMany(x => x.Events)
                     .HasForeignKey(x => x.CityId);
+
+                _event
+                    .HasMany(x => x.Favourites)
+                    .WithOne(x => x.Event)
+                    .HasForeignKey(x => x.EventId);
 
                 _event
                     .HasOne(x => x.Organization)

@@ -24,25 +24,7 @@
                             <p class="card-text">@description</p>
                             <div class="col-md-12">
                                 <a class="btn btn-info col-md-4" asp-controller="Home" asp-action="Details" asp-route-id="@eventViewModel.Id">Детайли</a>
-                                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
-                                {
-                                    <a class="btn btn-danger col-md-4" asp-controller="Events" asp-action="DeleteEvent" asp-route-id="@eventViewModel.Id">Изтрий</a>
-                                }
-                                else if (this.User.IsInRole(GlobalConstants.OrganizationRoleName))
-                                {
-                                    var userId = this.UserManager.GetUserId(this.User);
-                                    var organizationId = await this.UsersService.GetUsersOrganizationId(userId);
-
-                                    if (await this.EventsService.IsOrganizationOwnerOfEvent(organizationId, eventViewModel.Id))
-                                    {
-                                        <a class="btn btn-danger col-md-4" asp-controller="Events" asp-action="DeleteEvent" asp-route-id="@eventViewModel.Id">Изтрий</a>
-                                    }
-                                }
-
-                                @if (this.User.IsInRole(GlobalConstants.StudentRoleName))
-                                {
-                                    <a class="btn btn-warning col-md-6" asp-controller="Favourites" asp-action="AddToFavourites" asp-route-id="@eventViewModel.Id">Към любими</a>
-                                }
+                                <a class="btn btn-danger col-md-6" asp-controller="Favourites" asp-action="RemoveFromFavourites" asp-route-id="@eventViewModel.Id">Махни от любими</a>
 
                             </div>
                             <p class="card-text">

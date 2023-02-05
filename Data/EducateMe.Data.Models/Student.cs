@@ -22,6 +22,8 @@ public class Student : BaseDeletableModel<int>
 
     public int Age { get; set; }
 
+    public ICollection<Favourite> Favourites { get; set; } = new HashSet<Favourite>();
+
     public ICollection<StudentInterest> Interests { get; set; } = new HashSet<StudentInterest>();
 
     public ICollection<StudentCategory> Categories { get; set; } = new HashSet<StudentCategory>();

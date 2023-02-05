@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+
 using EducateMe.Common;
+using EducateMe.Data.Models;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Web.ViewModels;
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducateMe.Web.Controllers;
@@ -11,10 +14,16 @@ namespace EducateMe.Web.Controllers;
 public class HomeController : BaseController
 {
     private readonly IEventsService eventsService;
+    private readonly IUsersService usersService;
+    private readonly UserManager<ApplicationUser> userManager;
+    private readonly IFavouritesService favouritesService;
 
-    public HomeController(IEventsService eventsService)
+    public HomeController(IEventsService eventsService, IUsersService usersService, UserManager<ApplicationUser> userManager, IFavouritesService favouritesService)
     {
         this.eventsService = eventsService;
+        this.usersService = usersService;
+        this.userManager = userManager;
+        this.favouritesService = favouritesService;
     }
 
     public async Task<IActionResult> Index()
