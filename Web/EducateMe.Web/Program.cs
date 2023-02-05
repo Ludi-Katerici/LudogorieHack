@@ -63,7 +63,6 @@ public class Program
 
         // Application services
         services.AddTransient<IEmailSender, NullMessageSender>();
-        services.AddTransient<ISettingsService, SettingsService>();
         services.AddTransient<ICitiesService, CitiesService>();
         services.AddTransient<ICategoriesService, CategoriesService>();
         services.AddTransient<IInterestsService, InterestsService>();

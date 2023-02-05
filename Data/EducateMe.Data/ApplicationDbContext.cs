@@ -26,8 +26,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     {
     }
 
-    public DbSet<Setting> Settings { get; set; }
-
     public DbSet<ApplicationUser> Users { get; set; }
 
     public DbSet<EventCategory> EventCategories { get; set; }

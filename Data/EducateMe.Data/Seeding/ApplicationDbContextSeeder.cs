@@ -26,7 +26,6 @@ public class ApplicationDbContextSeeder : ISeeder
         var seeders = new List<ISeeder>
         {
             new RolesSeeder(),
-            new SettingsSeeder(),
             new CitiesSeeder(),
             new CategoriesSeeder(),
             new InterestsSeeder(),
