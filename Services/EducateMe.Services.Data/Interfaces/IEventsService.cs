@@ -18,5 +18,9 @@ public interface IEventsService
 
     Task<EventDetailsViewModel> GetEventDetails(int id);
 
+    Task<int> DeleteEvent(int id);
+
     Task ClickIt(int id);
+
+    Task<bool> IsOrganizationOwnerOfEvent(int organizationId, int eventId);
 }

@@ -122,6 +122,13 @@ public class EventService : IEventsService
         return eventResult;
     }
 
+    public async Task<int> DeleteEvent(int id)
+    {
+        var _event = await this.eventRepository.All().Where(x => x.Id == id).FirstOrDefaultAsync();
+        this.eventRepository.Delete(_event);
+        return await this.eventRepository.SaveChangesAsync();
+    }
+
     public async Task ClickIt(int id)
     {
         var _event = await this.eventRepository.All().Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -131,5 +138,17 @@ public class EventService : IEventsService
         _event.Clicks = clicks + 1;
 
         await this.eventRepository.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsOrganizationOwnerOfEvent(int organizationId, int eventId)
+    {
+        var _event = await this.eventRepository.All().Where(x => x.Id == eventId).FirstOrDefaultAsync();
+
+        if (_event.OrganizationId == organizationId)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -65,8 +65,8 @@ public class RegisterOrganization : PageModel
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Не сте въвели име")]
-        [StringLength(5000)]
-        [MinLength(50)]
+        [StringLength(5000, ErrorMessage = "Максимум 5000 знака")]
+        [MinLength(50, ErrorMessage = "Минимум 50 знака")]
         [Display(Name = "Описание")]
         public string Description { get; set; }
 

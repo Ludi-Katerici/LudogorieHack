@@ -1,4 +1,11 @@
-﻿@model ICollection<EducateMe.Web.ViewModels.Home.EventCardViewModel>
+﻿@using EducateMe.Common
+@using EducateMe.Data.Models
+@using EducateMe.Services.Data.Interfaces
+@using Microsoft.AspNetCore.Identity
+@model ICollection<EducateMe.Web.ViewModels.Home.EventCardViewModel>
+@inject IEventsService EventsService
+@inject UserManager<ApplicationUser> UserManager;
+@inject IUsersService UsersService;
 
 <h1 class="justify-content-center align-content-center d-flex my-3">Събития</h1>
 <section class="100vh justify-content-center align-content-center d-flex">
@@ -17,6 +24,21 @@
                             <p class="card-text">@description</p>
                             <div class="col-md-12">
                                 <a class="btn btn-info col-md-4" asp-controller="Home" asp-action="Details" asp-route-id="@eventViewModel.Id">Детайли</a>
+                                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                                {
+                                    <a class="btn btn-danger col-md-4" asp-controller="Events" asp-action="DeleteEvent" asp-route-id="@eventViewModel.Id">Изтрий</a>
+                                }
+                                else if (this.User.IsInRole(GlobalConstants.OrganizationRoleName))
+                                {
+                                    var userId = this.UserManager.GetUserId(this.User);
+                                    var organizationId = await this.UsersService.GetUsersOrganizationId(userId);
+                                    
+                                    if (await this.EventsService.IsOrganizationOwnerOfEvent(organizationId, eventViewModel.Id))
+                                    {
+                                        <a class="btn btn-danger col-md-4" asp-controller="Events" asp-action="DeleteEvent" asp-route-id="@eventViewModel.Id">Изтрий</a>
+                                    }
+                                }
+                                
                             </div>
                             <p class="card-text">
                                 <small class="text-muted">Създаден на: @eventViewModel.CreatedOn.Date.ToString("d")</small>

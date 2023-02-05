@@ -4,7 +4,6 @@
 
 using System;
 using System.Threading.Tasks;
-
 using EducateMe.Common;
 using EducateMe.Data.Models;
 using EducateMe.Services;
@@ -14,7 +13,6 @@ using EducateMe.Web.ViewModels.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EducateMe.Web.Controllers;
 
@@ -67,7 +65,9 @@ public class EventsController : BaseController
 
         if (inputEventViewModel.ExpirationDate <= DateTime.Today)
         {
-            this.ModelState.AddModelError("ExpirationDate", "Датата на кандидатстване трябва да бъде днеска или в бъдеще");
+            this.ModelState.AddModelError(
+                "ExpirationDate",
+                "Датата на кандидатстване трябва да бъде днеска или в бъдеще");
             await this.PopulateModel(inputEventViewModel);
             return this.View(inputEventViewModel);
         }
@@ -120,6 +120,28 @@ public class EventsController : BaseController
             },
             inputEventViewModel.InterestsIds,
             inputEventViewModel.CategoriesIds);
+
+        return this.RedirectToAction("Index", "Home");
+    }
+
+    [Route("[controller]/Delete/{id:int}")]
+    [Authorize(Roles = $"{GlobalConstants.AdministratorRoleName},{GlobalConstants.OrganizationRoleName}")]
+    public async Task<IActionResult> DeleteEvent(int id)
+    {
+        if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+        {
+            await this.eventsService.DeleteEvent(id);
+        }
+        else
+        {
+            var userId = this.UserManager.GetUserId(this.User);
+            var organizationId = await this.usersService.GetUsersOrganizationId(userId);
+
+            if (await this.eventsService.IsOrganizationOwnerOfEvent(organizationId, id))
+            {
+                await this.eventsService.DeleteEvent(id);
+            }
+        }
 
         return this.RedirectToAction("Index", "Home");
     }
