@@ -1,6 +1,7 @@
 ﻿// <copyright file="AzureStorage.cs" company="PlaceholderCompany">Copyright (c) PlaceholderCompany. All rights reserved.</copyright>
 
 #nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,12 +12,11 @@ using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
-using EducateMe.Web.AzureServices;
 using EducateMe.Web.AzureServices.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace EducateMe.Services;
+namespace EducateMe.Web.AzureServices;
 
 public class AzureStorage : IAzureStorage
 {

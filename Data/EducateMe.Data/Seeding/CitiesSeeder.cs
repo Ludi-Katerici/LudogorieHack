@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-
-using EducateMe.Data.Models;
 using EducateMe.Data.Models.Common;
 using Microsoft.EntityFrameworkCore;
 

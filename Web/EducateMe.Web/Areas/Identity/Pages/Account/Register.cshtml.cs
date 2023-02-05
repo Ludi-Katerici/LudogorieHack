@@ -8,9 +8,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using EducateMe.Common;
 using EducateMe.Data.Models;
-using EducateMe.Data.Models.Common.RelationshipModels;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Web.AzureServices;
 using EducateMe.Web.Infrastructure.ValidationAttributes;
@@ -29,7 +29,6 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUserStore<ApplicationUser> userStore;
         private readonly IUserEmailStore<ApplicationUser> emailStore;
-        private readonly IEmailSender emailSender;
         private readonly ICitiesService citiesService;
         private readonly IInterestsService interestsService;
         private readonly ICategoriesService categoriesService;
@@ -41,7 +40,6 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender,
             ICitiesService citiesService,
             IInterestsService interestsService,
             ICategoriesService categoriesService,
@@ -53,7 +51,6 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             this.userStore = userStore;
             this.emailStore = this.GetEmailStore();
             this.signInManager = signInManager;
-            this.emailSender = emailSender;
             this.citiesService = citiesService;
             this.interestsService = interestsService;
             this.categoriesService = categoriesService;

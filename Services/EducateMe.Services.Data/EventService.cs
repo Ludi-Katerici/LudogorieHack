@@ -21,11 +21,9 @@ public class EventService : IEventsService
     private readonly IDeletableEntityRepository<Event> eventRepository;
     private readonly IRepository<Interest> interestsRepository;
     private readonly IRepository<Category> categoriesRepository;
-    private readonly IDeletableEntityRepository<Student> studentsRepository;
-    private readonly IRepository<Favourite> favouritesRepository;
 
     public EventService(
-        IDeletableEntityRepository<Event> eventRepository, 
+        IDeletableEntityRepository<Event> eventRepository,
         IRepository<Interest> interestsRepository,
         IRepository<Category> categoriesRepository,
         IDeletableEntityRepository<Student> studentsRepository,
@@ -34,8 +32,6 @@ public class EventService : IEventsService
         this.eventRepository = eventRepository;
         this.interestsRepository = interestsRepository;
         this.categoriesRepository = categoriesRepository;
-        this.studentsRepository = studentsRepository;
-        this.favouritesRepository = favouritesRepository;
     }
 
     public async Task<Event> CreateEvent(Event inputEvent, ICollection<int> interestsId, ICollection<int> categoriesId)

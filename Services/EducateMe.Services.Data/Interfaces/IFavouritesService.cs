@@ -13,7 +13,7 @@ namespace EducateMe.Services.Data.Interfaces;
 public interface IFavouritesService
 {
     Task<int> RemoveEventFromFavourites(int eventId, int studentId);
-    
+
     Task<Favourite> AddEventToStudentFavourites(int eventId, int studentId);
 
     Task<List<EventCardViewModel>> GetFavouriteEventsForUser(int studentId);

@@ -1,21 +1,17 @@
 ﻿namespace Sandbox
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
 
+    using CommandLine;
     using EducateMe.Data;
     using EducateMe.Data.Common;
     using EducateMe.Data.Common.Repositories;
     using EducateMe.Data.Models;
     using EducateMe.Data.Repositories;
     using EducateMe.Data.Seeding;
-    using EducateMe.Services.Data;
     using EducateMe.Services.Messaging;
-
-    using CommandLine;
-
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

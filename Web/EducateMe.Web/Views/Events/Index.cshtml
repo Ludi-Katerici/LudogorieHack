@@ -76,14 +76,14 @@
                                     <div class="row mt-4">
                                         <div class="col-md-6 mb-4">
 
-                                            <select id="provinces" class="form-control" asp-items="this.Model.Provinces">
+                                            <select id="provinces" class="form-control" asp-items="Model.Provinces">
                                                 <option value="" disabled selected>Избери област</option>
                                             </select>
 
                                         </div>
                                         <div class="col-md-6 mb-4">
 
-                                            <select id="postalCode" asp-for="CityId" class="form-control" asp-items="this.Model.Cities">
+                                            <select id="postalCode" asp-for="CityId" class="form-control" asp-items="Model.Cities">
                                                 <option value="" disabled selected>Избери град</option>
                                             </select>
 
@@ -92,14 +92,14 @@
 
                                     <div class="row p-3">
                                         <label asp-for="InterestsIds"></label>
-                                        <select asp-for="InterestsIds" asp-items="this.Model.Interests" multiple>
+                                        <select asp-for="InterestsIds" asp-items="Model.Interests" multiple>
                                         </select>
                                         <span asp-validation-for="InterestsIds"></span>
                                     </div>
 
                                     <div class="row p-3">
                                         <label asp-for="CategoriesIds"></label>
-                                        <select asp-for="CategoriesIds" asp-items="this.Model.Categories" multiple>
+                                        <select asp-for="CategoriesIds" asp-items="Model.Categories" multiple>
                                         </select>
                                         <span asp-validation-for="CategoriesIds"></span>
                                     </div>

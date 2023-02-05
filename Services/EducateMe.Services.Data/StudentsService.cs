@@ -5,12 +5,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using EducateMe.Data.Common.Repositories;
 using EducateMe.Data.Models;
-using EducateMe.Data.Models.Common;
 using EducateMe.Data.Models.Common.RelationshipModels;
 using EducateMe.Services.Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace EducateMe.Services.Data;
 

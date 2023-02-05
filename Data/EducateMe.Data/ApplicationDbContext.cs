@@ -114,7 +114,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     {
         var changedEntries = this.ChangeTracker
             .Entries()
-            .Where(e =>
+            .Where(
+                e =>
                 e.Entity is IAuditInfo &&
                 (e.State == EntityState.Added || e.State == EntityState.Modified));
 

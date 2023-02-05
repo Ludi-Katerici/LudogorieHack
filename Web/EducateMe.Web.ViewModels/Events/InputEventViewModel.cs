@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 using EducateMe.Web.Infrastructure.ValidationAttributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -73,7 +74,6 @@ public class InputEventViewModel
     [DataType(DataType.Date)]
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
     public DateTime EndDate { get; set; } = DateTime.Today;
-
 
     public int OrganizationId { get; set; }
 

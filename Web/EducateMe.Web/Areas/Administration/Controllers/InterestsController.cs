@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using EducateMe.Common;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Web.Controllers;
-using EducateMe.Web.ViewModels.Administration.Categories;
 using EducateMe.Web.ViewModels.Administration.Interests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

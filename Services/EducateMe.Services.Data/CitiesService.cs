@@ -5,9 +5,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using EducateMe.Data.Common.Repositories;
 using EducateMe.Data.Models.Common;
 using EducateMe.Services.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EducateMe.Services.Data;
 
@@ -42,7 +44,7 @@ public class CitiesService : ICitiesService
     {
         if (Cities.CityList.Count == 0)
         {
-            Cities.CityList = this.citiesRepository.AllAsNoTracking().ToList();
+            Cities.CityList = await this.citiesRepository.AllAsNoTracking().ToListAsync();
         }
 
         return Cities.CityList

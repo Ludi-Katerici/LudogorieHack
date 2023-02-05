@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Threading.Tasks;
+
 using EducateMe.Common;
 using EducateMe.Data.Models;
 using EducateMe.Services.Data.Interfaces;
@@ -55,7 +56,7 @@ public class FavouritesController : BaseController
         var userId = this.userManager.GetUserId(this.User);
         var studentId = await this.usersService.GetUsersStudentId(userId);
 
-        var favourite = await this.favouritesService.RemoveEventFromFavourites(id, studentId);
+        await this.favouritesService.RemoveEventFromFavourites(id, studentId);
 
         return this.RedirectToAction("Index");
     }

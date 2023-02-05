@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using EducateMe.Data.Models;
-using EducateMe.Data.Models.Common;
 using EducateMe.Web.ViewModels.Home;
 
 namespace EducateMe.Services.Data.Interfaces;

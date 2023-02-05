@@ -1,16 +1,12 @@
-﻿@using EducateMe.Common
-@using EducateMe.Data.Models
+﻿@using EducateMe.Data.Models
 @using EducateMe.Services.Data.Interfaces
 @using Microsoft.AspNetCore.Identity
 @model ICollection<EducateMe.Web.ViewModels.Home.EventCardViewModel>
-@inject IEventsService EventsService
-@inject UserManager<ApplicationUser> UserManager;
-@inject IUsersService UsersService;
 
 <h1 class="justify-content-center align-content-center d-flex my-3">Събития</h1>
 <section class="100vh justify-content-center align-content-center d-flex">
     <div class="row col-lg-12 align-content-center justify-content-center d-flex">
-        @foreach (var eventViewModel in this.Model)
+        @foreach (var eventViewModel in Model)
         {
             var description = eventViewModel.Description[..128] + "...";
             <div class="card mb-3 mx-3 col-lg-6" style="max-width: 540px;">

@@ -10,6 +10,5 @@ public class RegisterButtonsModel : PageModel
 {
     public void OnGet()
     {
-        
     }
 }

@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
+
 using EducateMe.Common;
 using EducateMe.Data.Models;
 using EducateMe.Services;
@@ -20,7 +21,7 @@ namespace EducateMe.Web.Controllers;
 public class EventsController : BaseController
 {
     private readonly IDropdownListService dropdownListService;
-    private readonly UserManager<ApplicationUser> UserManager;
+    private readonly UserManager<ApplicationUser> userManager;
     private readonly IUsersService usersService;
     private readonly IEventsService eventsService;
     private readonly IAzureStorage azureStorage;
@@ -33,7 +34,7 @@ public class EventsController : BaseController
         IAzureStorage azureStorage)
     {
         this.dropdownListService = dropdownListService;
-        this.UserManager = userManager;
+        this.userManager = userManager;
         this.usersService = usersService;
         this.eventsService = eventsService;
         this.azureStorage = azureStorage;
@@ -60,7 +61,7 @@ public class EventsController : BaseController
     [HttpPost]
     public async Task<IActionResult> Index(InputEventViewModel inputEventViewModel)
     {
-        var userId = this.UserManager.GetUserId(this.User);
+        var userId = this.userManager.GetUserId(this.User);
         inputEventViewModel.OrganizationId = await this.usersService.GetUsersOrganizationId(userId);
 
         if (inputEventViewModel.ExpirationDate <= DateTime.Today)
@@ -91,7 +92,7 @@ public class EventsController : BaseController
             return this.RedirectToAction("Index");
         }
 
-        var imageUrl = "";
+        var imageUrl = string.Empty;
         var imageResult = await this.azureStorage.UploadAsync(inputEventViewModel.Image);
         if (!imageResult.Error)
         {
@@ -102,7 +103,7 @@ public class EventsController : BaseController
             throw new ArgumentException("Error");
         }
 
-        var eventResult = await this.eventsService.CreateEvent(
+        await this.eventsService.CreateEvent(
             new Event()
             {
                 Name = inputEventViewModel.Name,
@@ -134,7 +135,7 @@ public class EventsController : BaseController
         }
         else
         {
-            var userId = this.UserManager.GetUserId(this.User);
+            var userId = this.userManager.GetUserId(this.User);
             var organizationId = await this.usersService.GetUsersOrganizationId(userId);
 
             if (await this.eventsService.IsOrganizationOwnerOfEvent(organizationId, id))
