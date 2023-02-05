@@ -12,47 +12,47 @@
                         <div class="row">
                             <div class="col">
                                 <p class="mx-2 mt-2 fw-bold" style="font-size: 20px">
-                                    Title:
+                                    Име:
                                     <span class="fw-light">@Model.Name</span>
                                 </p>
                                 <p class="mx-2 mt-2 fw-bold" style="font-size: 20px">
-                                    Interests:
+                                    Интереси:
                                     <span class="fw-light">@string.Join(", ", Model.Interests)</span>
                                 </p>
                                 <p class="mx-2 mt-2 fw-bold" style="font-size: 20px">
-                                    Categories:
+                                    Категории:
                                     <span class="fw-light">@string.Join(", ", Model.Categories)</span>
                                 </p>
                                 <p class="mx-2 mt-2 fw-bold" style="font-size: 20px">
-                                    Description:
+                                    Описание:
                                     <span class="fw-light">@Model.Description</span>
                                 </p>
                                 <p class="mx-2 fw-bold" style="font-size: 20px">
-                                    Age:
+                                    Години:
                                     <span class="fw-light">@Model.MinAge - @Model.MaxAge</span>
                                 </p>
                                 <p class="mx-2 fw-bold" style="font-size: 20px">
-                                    StartDate:
+                                    Начална дата:
                                     <span class="fw-light">@Model.StartDate.Date.ToString("d")</span>
-                                    EndDate:
+                                    Крайна дата:
                                     <span class="fw-light">@Model.EndDate.Date.ToString("d")</span>
                                 </p>
                                 <p class="mx-2 fw-bold" style="font-size: 20px">
-                                    Location:
+                                    Локация:
                                     <span class="fw-light">@Model.City</span>
                                 </p>
 
                                 <p class="mx-2 fw-bold" style="font-size: 20px">
-                                    ApplicationUrl:
-                                    <span class="fw-light">@Model.ApplicationUrl</span>
+                                    Линк за формуляр:
+                                    <a target="_blank" href="@Model.ApplicationUrl" class="fw-light"> [тук]</a>
                                 </p>
 
                                 <p class="mx-2 mt-5 fw-bold" style="font-size: 20px">
-                                    Organization:
+                                    Име на организация:
                                     <span class="fw-light">@Model.OrganizationName</span>
                                 </p>
                                 <p class="mx-2 fw-bold" style="font-size: 20px">
-                                    Organization:
+                                    Описание на организация:
                                     <span class="fw-light">@Model.Description</span>
                                 </p>
 

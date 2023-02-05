@@ -17,4 +17,6 @@ public class EventCardViewModel
     public string ImageUrl { get; set; }
 
     public DateTime CreatedOn { get; set; }
+
+    public int Clicks { get; set; }
 }

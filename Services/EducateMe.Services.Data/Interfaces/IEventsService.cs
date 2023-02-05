@@ -17,4 +17,6 @@ public interface IEventsService
     Task<List<EventCardViewModel>> GetEvents();
 
     Task<EventDetailsViewModel> GetEventDetails(int id);
+
+    Task ClickIt(int id);
 }

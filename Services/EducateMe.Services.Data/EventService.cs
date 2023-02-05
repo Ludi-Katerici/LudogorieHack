@@ -64,6 +64,7 @@ public class EventService : IEventsService
                 Name = x.Name,
                 CreatedOn = x.CreatedOn,
                 ImageUrl = x.ImageUrl,
+                Clicks = x.Clicks,
             }).ToListAsync();
     }
 
@@ -119,5 +120,16 @@ public class EventService : IEventsService
         };
 
         return eventResult;
+    }
+
+    public async Task ClickIt(int id)
+    {
+        var _event = await this.eventRepository.All().Where(x => x.Id == id).FirstOrDefaultAsync();
+
+        var clicks = _event.Clicks;
+
+        _event.Clicks = clicks + 1;
+
+        await this.eventRepository.SaveChangesAsync();
     }
 }

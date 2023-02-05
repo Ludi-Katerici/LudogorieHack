@@ -15,6 +15,8 @@ public class Event : BaseDeletableModel<int>
 {
     public string Name { get; set; }
 
+    public int Clicks { get; set; }
+
     public string Description { get; set; }
 
     public int MinAge { get; set; }

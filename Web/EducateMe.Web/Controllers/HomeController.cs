@@ -34,6 +34,8 @@ public class HomeController : BaseController
     {
         var eventViewModel = await this.eventsService.GetEventDetails(id);
 
+        await this.eventsService.ClickIt(id);
+
         return this.View(eventViewModel);
     }
 

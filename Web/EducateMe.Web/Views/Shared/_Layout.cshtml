@@ -34,9 +34,12 @@
                         </li>
                     }
 
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
+                    @if (!this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark btn btn-info text-white mx-2" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                    }
 
                 </ul>
                 <partial name="_LoginPartial"/>
@@ -54,7 +57,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="Administration" asp-controller="Categories" asp-action="Index">Privacy</a>
+        &copy; EducateMe
     </div>
 </footer>
 

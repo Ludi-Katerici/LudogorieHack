@@ -1,6 +1,6 @@
 ﻿@model ICollection<EducateMe.Web.ViewModels.Home.EventCardViewModel>
 
-<h1 class="justify-content-center align-content-center d-flex">Test</h1>
+<h1 class="justify-content-center align-content-center d-flex my-3">Събития</h1>
 <section class="100vh justify-content-center align-content-center d-flex">
     <div class="row col-lg-12 align-content-center justify-content-center d-flex">
         @foreach (var eventViewModel in this.Model)
@@ -16,11 +16,11 @@
                             <h5 class="card-title">@eventViewModel.Name</h5>
                             <p class="card-text">@description</p>
                             <div class="col-md-12">
-                                <a class="btn btn-info col-md-3" asp-controller="Home" asp-action="Details" asp-route-id="@eventViewModel.Id">Details</a>
-
+                                <a class="btn btn-info col-md-4" asp-controller="Home" asp-action="Details" asp-route-id="@eventViewModel.Id">Детайли</a>
                             </div>
                             <p class="card-text">
-                                <small class="text-muted">Created on: @eventViewModel.CreatedOn.Date.ToString("d")</small>
+                                <small class="text-muted">Създаден на: @eventViewModel.CreatedOn.Date.ToString("d")</small>
+                                <small class="text-muted"> | Брой разглеждания: @eventViewModel.Clicks</small>
                             </p>
                         </div>
                     </div>
