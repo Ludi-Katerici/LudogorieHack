@@ -13,9 +13,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EducateMe.Services.Data;
 
-public static class Cities
+public static class CitiesList
 {
-    public static List<City> CityList { get; set; } = new();
+    public static List<City> Cities { get; set; } = new();
 }
 
 public class CitiesService : ICitiesService
@@ -29,12 +29,9 @@ public class CitiesService : ICitiesService
 
     public async Task<List<string>> GetProvinces()
     {
-        if (Cities.CityList.Count == 0)
-        {
-            Cities.CityList = this.citiesRepository.AllAsNoTracking().ToList();
-        }
+        await this.EnsureCityListIsPopulated();
 
-        return Cities.CityList
+        return CitiesList.Cities
             .Select(x => x.Province)
             .Distinct()
             .ToList();
@@ -42,19 +39,37 @@ public class CitiesService : ICitiesService
 
     public async Task<List<City>> GetCities(string province)
     {
-        if (Cities.CityList.Count == 0)
+        await this.EnsureCityListIsPopulated();
+
+        var cities = new List<City>();
+
+        for (var i = 0; i < CitiesList.Cities.Count; i++)
         {
-            Cities.CityList = await this.citiesRepository.AllAsNoTracking().ToListAsync();
+            if (CitiesList.Cities[i].Province == province)
+            {
+                cities.Add(new City()
+                {
+                    Id = CitiesList.Cities[i].Id,
+                    Name = CitiesList.Cities[i].Name,
+                    Municipality = CitiesList.Cities[i].Municipality,
+                    PostalCode = CitiesList.Cities[i].PostalCode,
+                });
+            }
         }
 
-        return Cities.CityList
-            .Where(x => x.Province == province).Select(
-                x => new City()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Municipality = x.Municipality,
-                    PostalCode = x.PostalCode,
-                }).ToList();
+        return cities;
+    }
+
+    private async Task GetCitiesFromDatabase()
+    {
+        CitiesList.Cities = await this.citiesRepository.AllAsNoTracking().ToListAsync();
+    }
+
+    private async Task EnsureCityListIsPopulated()
+    {
+        if (CitiesList.Cities.Count == 0)
+        {
+            await this.GetCitiesFromDatabase();
+        }
     }
 }
