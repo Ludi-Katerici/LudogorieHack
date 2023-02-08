@@ -1,5 +1,7 @@
 ﻿@page
+@using EducateMe.Services.Data.Interfaces
 @model EducateMe.Web.Areas.Identity.Pages.Account.RegisterOrganization
+@inject ICitiesService CitiesService
 
 <section class="vh-100">
     <div class="container">
@@ -90,10 +92,15 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
+                                    @{
+                                        var cities = await this.CitiesService.ProvincesSelectList();
+                                        
+                                        <select id="provinces" class="form-control" asp-items="cities">
+                                            <option value="" disabled selected>Избери област</option>
+                                        </select>
+                                    }
 
-                                    <select id="provinces" class="form-control" asp-items="this.Model.Input.Provinces">
-                                        <option value="" disabled selected>Избери област</option>
-                                    </select>
+                                   
 
                                 </div>
                                 <div class="col-md-6 mb-4">
@@ -101,6 +108,7 @@
                                     <select id="postalCode" asp-for="Input.CityId" class="form-control" asp-items="this.Model.Input.Cities">
                                         <option value="" disabled selected>Избери град</option>
                                     </select>
+                                    <span asp-validation-for="Input.CityId" class="text-danger"></span>
 
                                 </div>
                             </div>

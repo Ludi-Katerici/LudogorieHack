@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 
 using EducateMe.Data;
@@ -37,7 +38,10 @@ public class Program
     private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(
-            options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")); 
+            });
 
         services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
             .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
