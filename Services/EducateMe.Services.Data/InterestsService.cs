@@ -10,6 +10,7 @@ using EducateMe.Data.Common.Repositories;
 using EducateMe.Data.Models.Common;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Web.ViewModels.Administration.Interests;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducateMe.Services.Data;
@@ -21,6 +22,15 @@ public class InterestsService : IInterestsService
     public InterestsService(IRepository<Interest> interestsRepository)
     {
         this.interestsRepository = interestsRepository;
+    }
+
+    public async Task<List<SelectListItem>> GetInterestsSelectList()
+    {
+        var interests = await this.GetInterests();
+
+        var interestsSelectList = interests.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+
+        return interestsSelectList;
     }
 
     public Task<List<Interest>> GetInterests()

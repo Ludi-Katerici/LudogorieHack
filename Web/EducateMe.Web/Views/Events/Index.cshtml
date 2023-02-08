@@ -1,4 +1,8 @@
-﻿@model EducateMe.Web.ViewModels.Events.InputEventViewModel
+﻿@inject ICitiesService CitiesService;
+@inject ICategoriesService CategoriesService;
+@inject IInterestsService InterestsService;
+@using EducateMe.Services.Data.Interfaces
+@model EducateMe.Web.ViewModels.Events.InputEventViewModel
 
 <section>
     <div class="container">
@@ -75,15 +79,16 @@
 
                                     <div class="row mt-4">
                                         <div class="col-md-6 mb-4">
-
-                                            <select id="provinces" class="form-control" asp-items="Model.Provinces">
-                                                <option value="" disabled selected>Избери област</option>
-                                            </select>
-
+                                            @{
+                                                var provinces = await this.CitiesService.ProvincesSelectList();
+                                                
+                                                <select id="provinces" class="form-control" asp-items="provinces">
+                                                    <option value="" disabled selected>Избери област</option>
+                                                </select>
+                                            }
                                         </div>
                                         <div class="col-md-6 mb-4">
-
-                                            <select id="postalCode" asp-for="CityId" class="form-control" asp-items="Model.Cities">
+                                            <select id="postalCode" asp-for="CityId" class="form-control">
                                                 <option value="" disabled selected>Избери град</option>
                                             </select>
 
@@ -91,17 +96,26 @@
                                     </div>
 
                                     <div class="row p-3">
-                                        <label asp-for="InterestsIds"></label>
-                                        <select asp-for="InterestsIds" asp-items="Model.Interests" multiple>
-                                        </select>
-                                        <span asp-validation-for="InterestsIds"></span>
+                                        @{
+                                            var interests = await this.InterestsService.GetInterestsSelectList();
+                                            
+                                            <label asp-for="InterestsIds"></label>
+                                            <select asp-for="InterestsIds" asp-items="interests" multiple>
+                                            </select>
+                                            <span asp-validation-for="InterestsIds"></span>
+                                        }
+                                        
                                     </div>
 
                                     <div class="row p-3">
-                                        <label asp-for="CategoriesIds"></label>
-                                        <select asp-for="CategoriesIds" asp-items="Model.Categories" multiple>
-                                        </select>
-                                        <span asp-validation-for="CategoriesIds"></span>
+                                        @{
+                                            var categories = await this.CategoriesService.GetCategoriesSelectList();
+                                            
+                                            <label asp-for="CategoriesIds"></label>
+                                            <select asp-for="CategoriesIds" asp-items="categories" multiple>
+                                            </select>
+                                            <span asp-validation-for="CategoriesIds"></span>
+                                        }
                                     </div>
 
                                     <div class="d-flex justify-content-end pt-3">

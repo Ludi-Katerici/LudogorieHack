@@ -10,6 +10,7 @@ using EducateMe.Data.Common.Repositories;
 using EducateMe.Data.Models.Common;
 using EducateMe.Services.Data.Interfaces;
 using EducateMe.Web.ViewModels.Administration.Categories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducateMe.Services.Data;
@@ -68,5 +69,14 @@ public class CategoriesService : ICategoriesService
         this.categoriesRepository.Delete(category);
 
         return await this.categoriesRepository.SaveChangesAsync();
+    }
+
+    public async Task<List<SelectListItem>> GetCategoriesSelectList()
+    {
+        var categories = await this.GetCategories();
+
+        var categoriesSelectList = categories.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+
+        return categoriesSelectList;
     }
 }

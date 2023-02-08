@@ -146,7 +146,7 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
         {
             this.Input = new InputModel();
 
-            await this.PopulateInputModel(this.Input);
+            // await this.PopulateInputModel(this.Input);
             this.ReturnUrl = returnUrl;
         }
 

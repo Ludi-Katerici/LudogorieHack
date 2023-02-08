@@ -44,17 +44,6 @@ public class EventsController : BaseController
     {
         var inputModel = new InputEventViewModel();
 
-        var categories = await this.dropdownListService.SeedCategories();
-        var interests = await this.dropdownListService.SeedInterests();
-
-        var (provinces, cities) = await this.dropdownListService.SeedCities();
-
-        inputModel.Categories = categories;
-        inputModel.Interests = interests;
-
-        inputModel.Provinces = provinces;
-        inputModel.Cities = cities;
-
         return this.View(inputModel);
     }
 
@@ -69,21 +58,18 @@ public class EventsController : BaseController
             this.ModelState.AddModelError(
                 "ExpirationDate",
                 "Датата на кандидатстване трябва да бъде днеска или в бъдеще");
-            await this.PopulateModel(inputEventViewModel);
             return this.View(inputEventViewModel);
         }
 
         if (inputEventViewModel.StartDate >= inputEventViewModel.EndDate)
         {
             this.ModelState.AddModelError("StartDate", "Началната дата трябва да бъде преди крайната.");
-            await this.PopulateModel(inputEventViewModel);
             return this.View(inputEventViewModel);
         }
 
         if (inputEventViewModel.MinAge > inputEventViewModel.MaxAge)
         {
             this.ModelState.AddModelError("MinAge", "Минималните години трябва да са по-малки от максималните");
-            await this.PopulateModel(inputEventViewModel);
             return this.View(inputEventViewModel);
         }
 
@@ -145,14 +131,5 @@ public class EventsController : BaseController
         }
 
         return this.RedirectToAction("Index", "Home");
-    }
-
-    private async Task PopulateModel(InputEventViewModel inputEventViewModel)
-    {
-        inputEventViewModel.Categories = await this.dropdownListService.SeedCategories();
-        inputEventViewModel.Interests = await this.dropdownListService.SeedInterests();
-        var (provinces, cities) = await this.dropdownListService.SeedCities();
-        inputEventViewModel.Provinces = provinces;
-        inputEventViewModel.Cities = cities;
     }
 }

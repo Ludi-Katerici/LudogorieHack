@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using EducateMe.Data.Models.Common;
 using EducateMe.Web.ViewModels.Administration.Categories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EducateMe.Services.Data.Interfaces;
 
@@ -21,4 +22,6 @@ public interface ICategoriesService
     Task<bool> ExistsWithName(string name);
 
     Task<int> DeleteCategory(int id);
+
+    Task<List<SelectListItem>> GetCategoriesSelectList();
 }

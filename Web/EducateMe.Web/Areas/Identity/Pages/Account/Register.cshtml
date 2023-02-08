@@ -1,5 +1,9 @@
 ﻿@page
+@using EducateMe.Services.Data.Interfaces
 @model RegisterModel
+@inject IInterestsService InterestsService
+@inject ICategoriesService CategoriesService
+@inject ICitiesService CitiesService
 @{
     ViewData["Title"] = "Register";
 }
@@ -100,14 +104,18 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
 
-                                            <select id="provinces" class="form-control" asp-items="this.Model.Input.Provinces">
-                                                <option value="" disabled selected>Избери област</option>
-                                            </select>
+                                            @{
+                                                var provinces = await this.CitiesService.ProvincesSelectList();
+
+                                                <select id="provinces" class="form-control" asp-items="provinces">
+                                                    <option value="" disabled selected>Избери област</option>
+                                                </select>
+                                            }
 
                                         </div>
                                         <div class="col-md-6 mb-4">
 
-                                            <select id="postalCode" asp-for="Input.CityId" class="form-control" asp-items="this.Model.Input.Cities">
+                                            <select id="postalCode" asp-for="Input.CityId" class="form-control">
                                                 <option value="" disabled selected>Избери град</option>
                                             </select>
 
@@ -115,17 +123,25 @@
                                     </div>
 
                                     <div class="row p-3">
-                                        <label asp-for="Input.InterestsIds"></label>
-                                        <select asp-for="Input.InterestsIds" asp-items="this.Model.Input.Interests" multiple>
-                                        </select>
-                                        <span asp-validation-for="Input.InterestsIds"></span>
+                                        @{
+                                            var interests = await this.InterestsService.GetInterestsSelectList();
+                                            
+                                            <label asp-for="Input.InterestsIds"></label>
+                                            <select asp-for="Input.InterestsIds" asp-items="interests" multiple>
+                                            </select>
+                                            <span asp-validation-for="Input.InterestsIds"></span>
+                                        }
                                     </div>
 
                                     <div class="row p-3">
-                                        <label asp-for="Input.CategoriesIds"></label>
-                                        <select asp-for="Input.CategoriesIds" asp-items="this.Model.Input.Categories" multiple>
-                                        </select>
-                                        <span asp-validation-for="Input.InterestsIds"></span>
+                                        @{
+                                            var categories = await this.CategoriesService.GetCategoriesSelectList();
+                                            
+                                            <label asp-for="Input.CategoriesIds"></label>
+                                            <select asp-for="Input.CategoriesIds" asp-items="categories" multiple>
+                                            </select>
+                                            <span asp-validation-for="Input.InterestsIds"></span>
+                                        }
                                     </div>
 
                                     <div class="row p-3">

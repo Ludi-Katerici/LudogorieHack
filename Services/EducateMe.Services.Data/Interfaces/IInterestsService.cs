@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 using EducateMe.Data.Models.Common;
 using EducateMe.Web.ViewModels.Administration.Interests;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EducateMe.Services.Data.Interfaces;
 
 public interface IInterestsService
 {
+    Task<List<SelectListItem>> GetInterestsSelectList();
+
     Task<List<Interest>> GetInterests();
 
     Task<List<InterestTableViewModel>> GetInterestsTableData();
