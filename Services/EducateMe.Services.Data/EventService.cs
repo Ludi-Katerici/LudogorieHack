@@ -25,9 +25,7 @@ public class EventService : IEventsService
     public EventService(
         IDeletableEntityRepository<Event> eventRepository,
         IRepository<Interest> interestsRepository,
-        IRepository<Category> categoriesRepository,
-        IDeletableEntityRepository<Student> studentsRepository,
-        IRepository<Favourite> favouritesRepository)
+        IRepository<Category> categoriesRepository)
     {
         this.eventRepository = eventRepository;
         this.interestsRepository = interestsRepository;
@@ -70,56 +68,32 @@ public class EventService : IEventsService
 
     public async Task<EventDetailsViewModel> GetEventDetails(int id)
     {
-        var x = await this.eventRepository
-            .All()
+        var _event = await this.eventRepository
+            .AllAsNoTracking()
             .Where(x => x.Id == id)
-            .Include(x => x.Categories)
-            .Include(x => x.Organization)
-            .Include(x => x.Interests)
-            .Include(x => x.City)
-            .FirstOrDefaultAsync();
+            .Select(
+                x => new EventDetailsViewModel()
+                {
+                    Id = x.Id,
+                    Description = x.Description,
+                    Interests = x.Interests.Select(x => x.Interest.Name).ToList(),
+                    Categories = x.Categories.Select(x => x.Category.Name).ToList(),
+                    Name = x.Name,
+                    ImageUrl = x.ImageUrl,
+                    City = $"{x.City.Name}, {x.City.Province} [{x.City.PostalCode}]",
+                    Requirements = x.Requirements,
+                    ApplicationUrl = x.ApplicationUrl,
+                    EndDate = x.EndDate,
+                    ExpirationDate = x.ExpirationDate,
+                    MaxAge = x.MaxAge,
+                    MinAge = x.MinAge,
+                    OrganizationDescription = x.Organization.Description,
+                    StartDate = x.StartDate,
+                    OrganizationName = x.Organization.Name,
+                    OrganizationImageUrl = x.Organization.ImageUrl,
+                }).FirstOrDefaultAsync();
 
-        var categoriesId = x.Categories.Select(x => x.CategoryId).ToList();
-        var categoriesNames = new List<string>();
-        var interestsNames = new List<string>();
-
-        foreach (var categoryId in categoriesId)
-        {
-            var name = await this.categoriesRepository.AllAsNoTracking().Where(x => x.Id == categoryId).Select(x => x.Name)
-                .FirstOrDefaultAsync();
-            categoriesNames.Add(name);
-        }
-
-        var interestsId = x.Interests.Select(x => x.InterestId).ToList();
-        foreach (var interestId in interestsId)
-        {
-            var name = await this.interestsRepository.AllAsNoTracking().Where(x => x.Id == interestId).Select(x => x.Name)
-                .FirstOrDefaultAsync();
-            interestsNames.Add(name);
-        }
-
-        var eventResult = new EventDetailsViewModel()
-        {
-            Id = x.Id,
-            Description = x.Description,
-            Interests = interestsNames,
-            Categories = categoriesNames,
-            Name = x.Name,
-            ImageUrl = x.ImageUrl,
-            City = $"{x.City.Name}, {x.City.Province} [{x.City.PostalCode}]",
-            Requirements = x.Requirements,
-            ApplicationUrl = x.ApplicationUrl,
-            EndDate = x.EndDate,
-            ExpirationDate = x.ExpirationDate,
-            MaxAge = x.MaxAge,
-            MinAge = x.MinAge,
-            OrganizationDescription = x.Organization.Description,
-            StartDate = x.StartDate,
-            OrganizationName = x.Organization.Name,
-            OrganizationImageUrl = x.Organization.ImageUrl,
-        };
-
-        return eventResult;
+        return _event;
     }
 
     public async Task<int> DeleteEvent(int id)

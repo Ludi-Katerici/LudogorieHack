@@ -13,9 +13,33 @@ public static class ModelBuilderExtensions
 {
     public static void ConfigureRelations(this ModelBuilder builder)
     {
-        builder.Entity<EventCategory>().HasKey(x => new { x.CategoryId, x.EventId });
+        builder.Entity<EventCategory>(
+            entity =>
+            {
+                entity.HasKey(x => new { x.CategoryId, x.EventId });
+                entity
+                    .HasOne(x => x.Event)
+                    .WithMany(x => x.Categories)
+                    .HasForeignKey(x => x.EventId);
+                entity
+                    .HasOne(x => x.Category)
+                    .WithMany(x => x.Events)
+                    .HasForeignKey(x => x.CategoryId);
+            });
 
-        builder.Entity<EventInterest>().HasKey(x => new { x.InterestId, x.EventId });
+        builder.Entity<EventInterest>(
+            entity =>
+            {
+                entity.HasKey(x => new { x.InterestId, x.EventId });
+                entity
+                    .HasOne(x => x.Event)
+                    .WithMany(x => x.Interests)
+                    .HasForeignKey(x => x.EventId);
+                entity
+                    .HasOne(x => x.Interest)
+                    .WithMany(x => x.Events)
+                    .HasForeignKey(x => x.InterestId);
+            });
 
         builder.Entity<EventStudent>().HasKey(x => new { x.StudentId, x.EventId });
 
@@ -114,6 +138,7 @@ public static class ModelBuilderExtensions
                     .WithMany(x => x.Events)
                     .HasForeignKey(x => x.OrganizationId);
 
+                /*
                 _event
                     .HasMany(x => x.Categories)
                     .WithOne(x => x.Event)
@@ -122,7 +147,7 @@ public static class ModelBuilderExtensions
                 _event
                     .HasMany(x => x.Interests)
                     .WithOne(x => x.Event)
-                    .HasForeignKey(x => x.EventId);
+                    .HasForeignKey(x => x.EventId);*/
 
                 _event
                     .HasMany(x => x.Students)
@@ -139,11 +164,6 @@ public static class ModelBuilderExtensions
                     .HasForeignKey(x => x.InterestId);
 
                 interest
-                    .HasMany(x => x.Events)
-                    .WithOne(x => x.Interest)
-                    .HasForeignKey(x => x.EventId);
-
-                interest
                     .HasIndex(x => x.Name)
                     .IsUnique();
             });
@@ -155,11 +175,6 @@ public static class ModelBuilderExtensions
                     .HasMany(x => x.Students)
                     .WithOne(x => x.Category)
                     .HasForeignKey(x => x.StudentId);
-
-                category
-                    .HasMany(x => x.Events)
-                    .WithOne(x => x.Category)
-                    .HasForeignKey(x => x.EventId);
 
                 category
                     .HasIndex(x => x.Name)
