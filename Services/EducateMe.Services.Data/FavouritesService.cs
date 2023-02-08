@@ -51,25 +51,20 @@ public class FavouritesService : IFavouritesService
 
     public async Task<List<EventCardViewModel>> GetFavouriteEventsForUser(int studentId)
     {
-        var favouritesOfUser = await this.studentsRepository
+        var favouritesOfUser = await this.favouritesRepository
             .AllAsNoTracking()
-            .Where(x => x.Id == studentId)
-            .Include(x => x.Favourites)
-            .ThenInclude(x => x.Event)
-            .Select(x => x.Favourites)
-            .FirstOrDefaultAsync();
+            .Where(x => x.StudentId == studentId)
+            .Select(
+                x => new EventCardViewModel()
+                {
+                    Id = x.Event.Id,
+                    Description = x.Event.Description,
+                    Name = x.Event.Name,
+                    CreatedOn = x.Event.CreatedOn,
+                    ImageUrl = x.Event.ImageUrl,
+                    Clicks = x.Event.Clicks,
+                }).ToListAsync();
 
-        var favouriteEvents = favouritesOfUser.Select(x => x.Event).ToList();
-
-        return favouriteEvents.Select(
-            x => new EventCardViewModel()
-            {
-                Id = x.Id,
-                Description = x.Description,
-                Name = x.Name,
-                CreatedOn = x.CreatedOn,
-                ImageUrl = x.ImageUrl,
-                Clicks = x.Clicks,
-            }).ToList();
+        return favouritesOfUser;
     }
 }
