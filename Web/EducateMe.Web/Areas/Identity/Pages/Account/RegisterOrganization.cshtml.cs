@@ -90,10 +90,6 @@ public class RegisterOrganization : PageModel
         [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
         public string ConfirmPassword { get; set; }
 
-        public List<SelectListItem> Provinces { get; set; } = new();
-
-        public List<SelectListItem> Cities { get; set; } = new();
-
         [Required(ErrorMessage = "Не сте избрали град")]
         [Display(Name = "Град")]
         public int CityId { get; set; }
@@ -102,8 +98,6 @@ public class RegisterOrganization : PageModel
     public async Task OnGetAsync(string returnUrl = null)
     {
         this.Input = new InputModel();
-
-        /*await this.LoadCitiesInDropdown(this.Input);*/
 
         this.ReturnUrl = returnUrl;
     }
@@ -154,9 +148,6 @@ public class RegisterOrganization : PageModel
             }
         }
 
-        /*
-        await this.LoadCitiesInDropdown(this.Input);*/
-
         return this.Page();
     }
 
@@ -183,13 +174,5 @@ public class RegisterOrganization : PageModel
                 $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                 $"override the register page in /Areas/Identity/Pages/Account/RegisterUser.cshtml");
         }
-    }
-
-    private async Task LoadCitiesInDropdown(InputModel inputModel)
-    {
-        inputModel.Provinces = await this.citiesService.ProvincesSelectList();
-
-        var cities = (await this.citiesService.GetCities(this.Input.Provinces[0].Value)).OrderBy(x => x.PostalCode);
-        inputModel.Cities = cities.Select(x => new SelectListItem($"{x.Name}, {x.PostalCode}", x.Id.ToString())).ToList();
     }
 }

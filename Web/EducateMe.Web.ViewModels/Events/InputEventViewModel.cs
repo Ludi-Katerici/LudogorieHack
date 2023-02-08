@@ -53,10 +53,6 @@ public class InputEventViewModel
     [Display(Name = "Форма за кандидатстване (LINK)")]
     public string ApplicationUrl { get; set; }
 
-    public List<SelectListItem> Provinces { get; set; } = new();
-
-    public List<SelectListItem> Cities { get; set; } = new();
-
     [Required(ErrorMessage = "Не сте избрали град")]
     [Display(Name = "Град")]
     public int CityId { get; set; }
@@ -77,13 +73,9 @@ public class InputEventViewModel
 
     public int OrganizationId { get; set; }
 
-    public List<SelectListItem> Interests { get; set; }
-
     [Display(Name = "Интереси")]
     [EnsureOneElement(ErrorMessage = "Не сте избрали интерес")]
     public List<int> InterestsIds { get; set; } = new();
-
-    public List<SelectListItem> Categories { get; set; }
 
     [Display(Name = "Категории")]
     [EnsureOneElement(ErrorMessage = "Не сте избрали категория")]

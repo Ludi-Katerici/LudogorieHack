@@ -117,21 +117,13 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
             public string ConfirmPassword { get; set; }
 
-            public List<SelectListItem> Provinces { get; set; } = new();
-
-            public List<SelectListItem> Cities { get; set; } = new();
-
             [Required(ErrorMessage = "Не сте избрали град")]
             [Display(Name = "Град")]
             public int CityId { get; set; }
 
-            public List<SelectListItem> Interests { get; set; }
-
             [Display(Name = "Интереси")]
             [EnsureOneElement(ErrorMessage = "Не сте избрали интерес")]
             public List<int> InterestsIds { get; set; } = new();
-
-            public List<SelectListItem> Categories { get; set; }
 
             [Display(Name = "Категории")]
             [EnsureOneElement(ErrorMessage = "Не сте избрали категория")]
@@ -145,8 +137,6 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             this.Input = new InputModel();
-
-            // await this.PopulateInputModel(this.Input);
             this.ReturnUrl = returnUrl;
         }
 
@@ -199,8 +189,6 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            await this.PopulateInputModel(this.Input);
-
             // If we got this far, something failed, redisplay form
             return this.Page();
         }
@@ -228,18 +216,6 @@ namespace EducateMe.Web.Areas.Identity.Pages.Account
             }
 
             return (IUserEmailStore<ApplicationUser>)this.userStore;
-        }
-
-        private async Task PopulateInputModel(InputModel inputModel)
-        {
-            inputModel.Categories = (await this.categoriesService.GetCategories()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
-            inputModel.Interests = (await this.interestsService.GetInterests()).Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
-
-            var provinces = await this.citiesService.GetProvinces();
-            inputModel.Provinces = provinces.Select(x => new SelectListItem(x, x)).ToList();
-
-            var cities = (await this.citiesService.GetCities(this.Input.Provinces[0].Value)).OrderBy(x => x.PostalCode);
-            inputModel.Cities = cities.Select(x => new SelectListItem($"{x.Name}, {x.PostalCode}", x.Id.ToString())).ToList();
         }
     }
 }
