@@ -36,23 +36,18 @@ public class EventService : IEventsService
 
     public async Task<Event> CreateEvent(Event inputEvent, ICollection<int> interestsId, ICollection<int> categoriesId)
     {
-        await this.eventRepository.AddAsync(inputEvent);
-
-        await this.eventRepository.SaveChangesAsync();
-
         inputEvent.Categories = categoriesId.Select(
             categoryId => new EventCategory
             {
                 CategoryId = categoryId,
-                EventId = inputEvent.Id,
             }).ToList();
 
         inputEvent.Interests = interestsId.Select(
             interestId => new EventInterest
             {
                 InterestId = interestId,
-                EventId = inputEvent.Id,
             }).ToList();
+        await this.eventRepository.AddAsync(inputEvent);
 
         await this.eventRepository.SaveChangesAsync();
 
